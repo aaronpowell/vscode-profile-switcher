@@ -1,0 +1,92 @@
+{
+    "name": "vscode-profile-switcher",
+    "displayName": "Profile Switcher",
+    "description": "Allows you to switch between different profiles you have created",
+    "version": "0.1.0",
+    "license": "SEE LICENSE IN LICENSE.md",
+    "publisher": "aaronpowell",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aaronpowell/vscode-profile-switcher.git"
+    },
+    "bugs": {
+        "url": "https://github.com/aaronpowell/vscode-profile-switcher/issues"
+    },
+    "engines": {
+        "vscode": "^1.35.0"
+    },
+    "author": {
+        "name": "Aaron Powell",
+        "url": "https://www.aaron-powell.com"
+    },
+    "categories": [
+        "Themes",
+        "Other"
+    ],
+    "keywords": [
+        "presenter",
+        "vscode-settings",
+        "code-settings",
+        "profile",
+        "settings"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.selectProfile",
+                "title": "Profile Switcher: Select Profile"
+            },
+            {
+                "command": "extension.saveProfile",
+                "title": "Profile Switcher: Save Profile"
+            },
+            {
+                "command": "extension.deleteProfile",
+                "title": "Profile Switcher: Delete Profile"
+            }
+        ],
+        "configuration": {
+            "title": "Settings for the Profile Switcher",
+            "properties": {
+                "profileSwitcher.profiles": {
+                    "type": "array",
+                    "default": [],
+                    "description": "The names of the profiles that have been saved"
+                },
+                "profileSwitcher.storage": {
+                    "type": "object",
+                    "description": "These are the details for each profile that has been saved. Probably don't hand-edit this",
+                    "patternProperties": {
+                        ".*": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "package": "npx vsce package",
+        "publish": "npx vsce publish"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^7.0.0",
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^11.13.0",
+        "tslint": "^5.12.1",
+        "typescript": "^3.3.1",
+        "vscode": "^1.1.28"
+    },
+    "dependencies": {
+        "fs-extra": "^8.0.1"
+    }
+}
