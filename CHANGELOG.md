@@ -4,6 +4,6 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## 0.1.1
 
-- Initial release
+- Initial preview release release
