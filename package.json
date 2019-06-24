@@ -2,10 +2,17 @@
     "name": "vscode-profile-switcher",
     "displayName": "Profile Switcher",
     "description": "Allows you to switch between different profiles you have created",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "preview": true,
     "license": "SEE LICENSE IN LICENSE.md",
     "publisher": "aaronpowell",
+    "homepage": "https://github.com/aaronpowell/vscode-profile-switcher/blob/master/README.md",
+    "icon": "images/logo.png",
+    "galleryBanner": {
+        "color": "#373436",
+        "theme": "light"
+    },
+    "extensionKind": "ui",
     "repository": {
         "type": "git",
         "url": "https://github.com/aaronpowell/vscode-profile-switcher.git"

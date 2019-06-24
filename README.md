@@ -1,5 +1,8 @@
 # VS Code Profile Switcher
 
+[![Badge for version for Visual Studio Code extension aaronpowell.vscode-profile-switcher](https://vsmarketplacebadge.apphb.com/version/aaronpowell.vscode-profile-switcher.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell)
+[![Rating](https://vsmarketplacebadge.apphb.com/rating/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
+
 This extension allows you to define a number of settings profiles that you can easily switch between. The original idea for this extension came from my desire to have an easy way for me to switch my VS Code to a setup that was better optimised for presenting (changed themes, increase font size, etc).
 
 ## Install
@@ -12,6 +15,8 @@ This extension allows you to define a number of settings profiles that you can e
 ## Features
 
 The extension introduces three new commands that you can use from the command panel. All commands are prefixed with `Profile Switcher`.
+
+![Demo of the extension in action](images/readme-demo.gif)
 
 ### Save Profile
 
