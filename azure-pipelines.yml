@@ -66,6 +66,7 @@ jobs:
     displayName: 'Publish Pipeline Artifact'
     inputs:
       targetPath: release.vsix
+    condition: and(success(), eq(variables['node_version'], '12.x'))
 
 - job: Windows
   pool:
