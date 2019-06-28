@@ -8,7 +8,7 @@ pr:
 jobs:
 - job: Linux
   pool:
-    name: ubuntu-latest
+    name: Hosted Ubuntu 1604
     demands: npm
   strategy:
     matrix:
