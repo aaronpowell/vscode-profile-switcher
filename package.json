@@ -84,12 +84,15 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "package": "npx vsce package",
-        "publish": "npx vsce publish"
+        "publish": "npx vsce publish",
+        "lint": "tslint --project tsconfig.json -e src/*.d.ts -t verbose"
     },
     "devDependencies": {
+        "@types/chai": "^4.1.7",
         "@types/fs-extra": "^7.0.0",
         "@types/mocha": "^2.2.42",
         "@types/node": "^11.13.0",
+        "chai": "^4.2.0",
         "tslint": "^5.12.1",
         "typescript": "^3.3.1",
         "vscode": "^1.1.28"

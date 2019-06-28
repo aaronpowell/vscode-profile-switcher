@@ -1,19 +1,15 @@
 import * as vscode from "vscode";
 import SettingsHelper from "./settingsHelper";
-
-function getProfiles(profileSwitcherSettings: vscode.WorkspaceConfiguration) {
-  return profileSwitcherSettings.get<string[]>("profiles", []).sort();
-}
+import Commands from "./commands";
+import Config from "./services/config";
 
 export async function activate(context: vscode.ExtensionContext) {
-  let config = new SettingsHelper(context);
+  let settingsHelper = new SettingsHelper(context);
+  let config = new Config();
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.selectProfile", async () => {
-      let profileSwitcherSettings = vscode.workspace.getConfiguration(
-        "profileSwitcher"
-      );
-      let profiles = getProfiles(profileSwitcherSettings);
+    vscode.commands.registerCommand(Commands.SelectProfile, async () => {
+      let profiles = config.getProfiles();
 
       if (!profiles.length) {
         await vscode.window.showInformationMessage(
@@ -30,21 +26,15 @@ export async function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      let storage = profileSwitcherSettings.get<{ [key: string]: any }>(
-        "storage",
-        {}
-      );
+      let profileSettings = config.getProfileSettings(profile);
 
-      await config.updateUserSettings(storage[profile]);
+      await settingsHelper.updateUserSettings(profileSettings);
     })
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.saveProfile", async () => {
-      let profileSwitcherSettings = vscode.workspace.getConfiguration(
-        "profileSwitcher"
-      );
-      let profiles = getProfiles(profileSwitcherSettings);
+    vscode.commands.registerCommand(Commands.SaveProfile, async () => {
+      let profiles = config.getProfiles();
 
       let profile = await vscode.window.showQuickPick(
         [...profiles, "New profile"],
@@ -62,36 +52,11 @@ export async function activate(context: vscode.ExtensionContext) {
           return;
         }
 
-        profiles.push(profile);
+        await config.addProfile(profile);
       }
 
-      await profileSwitcherSettings.update(
-        "profiles",
-        profiles,
-        vscode.ConfigurationTarget.Global
-      );
-
-      let userSettings = await config.getUserSettings();
-
-      // We don't want to save profile info in the profile storage
-      if (userSettings["profileSwitcher.profiles"]) {
-        delete userSettings["profileSwitcher.profiles"];
-      }
-
-      if (userSettings["profileSwitcher.storage"]) {
-        delete userSettings["profileSwitcher.storage"];
-      }
-
-      let storage = profileSwitcherSettings.get<{ [key: string]: any }>(
-        "storage",
-        {}
-      );
-      storage[profile] = userSettings;
-      await profileSwitcherSettings.update(
-        "storage",
-        storage,
-        vscode.ConfigurationTarget.Global
-      );
+      let userSettings = await settingsHelper.getUserSettings();
+      await config.addProfileSettings(profile, userSettings);
 
       vscode.window.showInformationMessage(
         `Profile ${profile} has been saved.`
@@ -100,11 +65,8 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.deleteProfile", async () => {
-      let profileSwitcherSettings = vscode.workspace.getConfiguration(
-        "profileSwitcher"
-      );
-      let profiles = getProfiles(profileSwitcherSettings);
+    vscode.commands.registerCommand(Commands.DeleteProfile, async () => {
+      let profiles = config.getProfiles();
 
       if (!profiles.length) {
         await vscode.window.showInformationMessage(
@@ -121,28 +83,8 @@ export async function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      let newProfiles = profiles
-        .slice(0, profiles.indexOf(profile))
-        .concat(profiles.slice(profiles.indexOf(profile) + 1, profiles.length));
-
-      await profileSwitcherSettings.update(
-        "profiles",
-        newProfiles,
-        vscode.ConfigurationTarget.Global
-      );
-
-      let storage = profileSwitcherSettings.get<{ [key: string]: any }>(
-        "storage",
-        {}
-      );
-
-      delete storage[profile];
-
-      await profileSwitcherSettings.update(
-        "storage",
-        storage,
-        vscode.ConfigurationTarget.Global
-      );
+      await config.removeProfile(profile);
+      await config.removeProfileSettings(profile);
 
       await vscode.window.showInformationMessage(
         `Profile ${profile} has been deleted.`
