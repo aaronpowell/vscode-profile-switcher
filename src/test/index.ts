@@ -11,6 +11,7 @@
 // a possible error to the callback or null if none.
 
 import * as testRunner from "vscode/lib/testrunner";
+import * as path from "path";
 
 // You can directly control Mocha options by configuring the test runner below
 // See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options
@@ -18,7 +19,14 @@ import * as testRunner from "vscode/lib/testrunner";
 testRunner.configure({
   ui: "tdd", // the TDD UI is being used in extension.test.ts (suite, test, etc.)
   useColors: true, // colored output from test results,
-  timeout: 7500
+  timeout: 7500,
+  reporter: "mocha-multi-reporters",
+  reporterOptions: {
+    reporterEnabled: "spec, xunit",
+    xunitReporterOptions: {
+      output: path.join(__dirname, "..", "..", "test-results.xml")
+    }
+  }
 });
 
 module.exports = testRunner;

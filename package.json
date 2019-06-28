@@ -83,6 +83,7 @@
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
+        "test:ci": "node ./node_modules/vscode/bin/test",
         "package": "npx vsce package",
         "publish": "npx vsce publish",
         "lint": "tslint --project tsconfig.json -e src/*.d.ts -t verbose"
@@ -93,6 +94,7 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^11.13.0",
         "chai": "^4.2.0",
+        "mocha-multi-reporters": "^1.1.7",
         "tslint": "^5.12.1",
         "typescript": "^3.3.1",
         "vscode": "^1.1.28"
