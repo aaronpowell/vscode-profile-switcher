@@ -1,0 +1,11 @@
+steps:
+  - script: |
+      npx vsce package -o release.vsix
+    displayName: 'create vsix'
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      targetPath: release.vsix
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'))
+
