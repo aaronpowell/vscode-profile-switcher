@@ -1,5 +1,14 @@
 # VS Code Profile Switcher
 
+[![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)
+
+| Job                 | Status                                                                                                                                                                                                                                                                                                                       |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Linux (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux&configuration=Linux%20node_10_x)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
+| Linux (Node 12.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux&configuration=Linux%20node_12_x)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
+| Windows (Node 10.x) | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Windows)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)                               |
+| macOS (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=macOS)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)                                 |
+
 [![Badge for version for Visual Studio Code extension aaronpowell.vscode-profile-switcher](https://vsmarketplacebadge.apphb.com/version/aaronpowell.vscode-profile-switcher.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
 
@@ -7,10 +16,10 @@ This extension allows you to define a number of settings profiles that you can e
 
 ## Install
 
-* Open **Extensions** sidebar panel in Visual Studio Code. `View → Extensions`
-* Search for `Profile Switcher`
-* Click **Install**
-* Click **Reload**, if required
+- Open **Extensions** sidebar panel in Visual Studio Code. `View → Extensions`
+- Search for `Profile Switcher`
+- Click **Install**
+- Click **Reload**, if required
 
 ## Features
 

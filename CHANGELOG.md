@@ -4,6 +4,12 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachan2gelog.com/) for recommendations on how to structure this file.
 
+## 0.2.0 - 2019-06-28
+
+- Rewriting internals
+- Introduced testing
+- Tweaked Azure Pipelines to test across multiple OS's
+
 ## 0.1.3 - 2019-06-24
 
 - Tweaking settings for marketplace
