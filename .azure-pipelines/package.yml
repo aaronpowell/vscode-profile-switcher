@@ -1,22 +1,24 @@
 steps:
   - script: |
-      npx vsce package -o release.vsix
+      npx vsce package -o $(Build.ArtifactStagingDirectory)/release.vsix
     displayName: 'create vsix'
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: 'package.json' 
+      targetFolder: $(Build.ArtifactStagingDirectory)
+    displayName: 'Copy package.json'
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)'
+      contents: '*.md' 
+      targetFolder: $(Build.ArtifactStagingDirectory)
+    displayName: 'Copy *.md'
 
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline Artifact'
     inputs:
-      targetPath: release.vsix
-    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
-
-  - task: PublishPipelineArtifact@0
-    inputs:
-      contents: 'package.json'
-    displayName: 'Copy package.json'
-    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
-
-  - task: PublishPipelineArtifact@0
-    inputs:
-      contents: '*.md'
-    displayName: 'Copy *.md'
+      targetPath: '*.*'
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
