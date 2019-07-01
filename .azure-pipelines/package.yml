@@ -9,3 +9,14 @@ steps:
       targetPath: release.vsix
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
 
+  - task: PublishPipelineArtifact@0
+    inputs:
+      contents: 'package.json'
+    displayName: 'Copy package.json'
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      contents: '*.md'
+    displayName: 'Copy *.md'
+    condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
