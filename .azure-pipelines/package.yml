@@ -20,5 +20,5 @@ steps:
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline Artifact'
     inputs:
-      targetPath: '*.*'
+      targetPath: $(Build.ArtifactStagingDirectory)
     condition: and(succeeded(), eq(variables['node_version'], '12.x'), eq(variables['Agent.OS'], 'Linux'))
