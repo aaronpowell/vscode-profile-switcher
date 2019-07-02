@@ -2,6 +2,7 @@ import * as fs from "fs-extra";
 import * as vscode from "vscode";
 import * as os from "os";
 import * as path from "path";
+import { Settings } from "./services/config";
 
 export enum OsType {
   Windows = 1,
@@ -19,7 +20,7 @@ export default class SettingsHelper {
   public PATH: string = "";
   public OsType: OsType = OsType.Windows;
 
-  constructor(private context: vscode.ExtensionContext) {
+  public constructor(private context: vscode.ExtensionContext) {
     this.isInsiders = /insiders/.test(this.context.asAbsolutePath(""));
     this.isPortable = process.env.VSCODE_PORTABLE ? true : false;
     this.isOss = /\boss\b/.test(this.context.asAbsolutePath(""));
@@ -104,7 +105,7 @@ export default class SettingsHelper {
     return await fs.readJSON(settingsPath, { encoding: "utf8" });
   }
 
-  public async updateUserSettings(update: any) {
+  public async updateUserSettings(update: Settings) {
     let existingSettings = await this.getUserSettings();
 
     let newSettings = Object.assign({}, existingSettings, update);

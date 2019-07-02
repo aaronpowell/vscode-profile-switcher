@@ -1,7 +1,13 @@
 import * as vscode from "vscode";
 import { ConfigKey, ConfigProfilesKey, ConfigStorageKey } from "../constants";
 
-interface Storage { [key: string]: any }
+export interface Settings {
+  [key: string]: number | string | boolean | object;
+}
+
+export interface Storage {
+  [key: string]: Settings;
+}
 
 class Config {
   private getConfig() {
@@ -51,14 +57,14 @@ class Config {
     );
   }
 
-  public addProfileSettings(profile: string, settings: any) {
+  public addProfileSettings(profile: string, settings: Settings) {
     // We don't want to save profile info in the profile storage
-    if (settings["profileSwitcher.profiles"]) {
-      delete settings["profileSwitcher.profiles"];
+    if (settings[`${ConfigKey}:${ConfigProfilesKey}`]) {
+      delete settings[`${ConfigKey}:${ConfigProfilesKey}`];
     }
 
-    if (settings["profileSwitcher.storage"]) {
-      delete settings["profileSwitcher.storage"];
+    if (settings[`${ConfigKey}:${ConfigStorageKey}`]) {
+      delete settings[`${ConfigKey}:${ConfigStorageKey}`];
     }
 
     let storage = this.getStorage();

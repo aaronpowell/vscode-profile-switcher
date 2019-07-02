@@ -1,7 +1,7 @@
-enum Commands {
+enum ContributedCommands {
   SelectProfile = "extension.selectProfile",
   SaveProfile = "extension.saveProfile",
   DeleteProfile = "extension.deleteProfile"
 }
 
-export default Commands;
+export default ContributedCommands;

@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-explicit-any: "off" */
 import { assert } from "chai";
 import * as vscode from "vscode";
 import {
@@ -16,9 +17,9 @@ suite("basic extension tests", () => {
   });
 
   test("extension can activate", done => {
-    const extension = <vscode.Extension<any>>(
-      vscode.extensions.getExtension(ExtensionId)
-    );
+    const extension = vscode.extensions.getExtension(
+      ExtensionId
+    ) as vscode.Extension<any>;
 
     setTimeout(() => {
       assert.isTrue(extension.isActive);
@@ -188,29 +189,32 @@ suite("end to end testing", () => {
   };
 
   class MockMemento implements vscode.Memento {
-    get<T>(key: string): T | undefined;
-    get<T>(key: string, defaultValue: T): T;
-    get(key: any, defaultValue?: any) {
+    public get<T>(key: string): T | undefined;
+    public get<T>(key: string, defaultValue: T): T;
+    public get(key: any, defaultValue?: any) {
+      console.log(`${key}:${defaultValue}`);
       throw new Error("Method not implemented.");
     }
-    update(key: string, value: any): Thenable<void> {
+    public update(key: string, value: any): Thenable<void> {
+      console.log(`${key}:${value}`);
       throw new Error("Method not implemented.");
     }
   }
 
   class MockContext implements vscode.ExtensionContext {
-    subscriptions: { dispose(): any }[];
-    workspaceState: vscode.Memento;
-    globalState: vscode.Memento;
-    extensionPath: string;
-    asAbsolutePath(relativePath: string): string {
+    public subscriptions: { dispose(): any }[];
+    public workspaceState: vscode.Memento;
+    public globalState: vscode.Memento;
+    public extensionPath: string;
+    public asAbsolutePath(relativePath: string): string {
+      console.log(relativePath);
       return process.execPath;
     }
-    storagePath: string | undefined;
-    globalStoragePath: string;
-    logPath: string;
+    public storagePath: string | undefined;
+    public globalStoragePath: string;
+    public logPath: string;
 
-    constructor() {
+    public constructor() {
       this.subscriptions = [];
       this.extensionPath = "";
       this.globalStoragePath = "";

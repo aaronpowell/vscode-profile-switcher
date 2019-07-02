@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import SettingsHelper from "./settingsHelper";
-import Commands from "./commands";
+import ContributedCommands from "./commands";
 import Config from "./services/config";
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -8,7 +8,7 @@ export async function activate(context: vscode.ExtensionContext) {
   let config = new Config();
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(Commands.SelectProfile, async () => {
+    vscode.commands.registerCommand(ContributedCommands.SelectProfile, async () => {
       let profiles = config.getProfiles();
 
       if (!profiles.length) {
@@ -33,7 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(Commands.SaveProfile, async () => {
+    vscode.commands.registerCommand(ContributedCommands.SaveProfile, async () => {
       let profiles = config.getProfiles();
 
       let profile = await vscode.window.showQuickPick(
@@ -65,7 +65,7 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(Commands.DeleteProfile, async () => {
+    vscode.commands.registerCommand(ContributedCommands.DeleteProfile, async () => {
       let profiles = config.getProfiles();
 
       if (!profiles.length) {
