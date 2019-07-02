@@ -2,8 +2,13 @@ import * as vscode from "vscode";
 import SettingsHelper from "./settingsHelper";
 import ContributedCommands from "./commands";
 import Config from "./services/config";
+import ExtensionHelper from "./services/extensions";
 
-function selectProfile(config: Config, settingsHelper: SettingsHelper) {
+function selectProfile(
+  config: Config,
+  settingsHelper: SettingsHelper,
+  extensionsHelper: ExtensionHelper
+) {
   return async () => {
     let profiles = config.getProfiles();
 
@@ -22,13 +27,33 @@ function selectProfile(config: Config, settingsHelper: SettingsHelper) {
       return;
     }
 
-    let profileSettings = config.getProfileSettings(profile);
+    let msg = vscode.window.setStatusBarMessage("Switching profiles.");
 
+    let profileSettings = config.getProfileSettings(profile);
     await settingsHelper.updateUserSettings(profileSettings);
+
+    let extensions = config.getProfileExtensions(profile);
+    await extensionsHelper.installExtensions(extensions);
+    await extensionsHelper.removeExtensions(extensions);
+
+    msg.dispose();
+
+    const message = await vscode.window.showInformationMessage(
+      "Do you want to reload and activate the extensions?",
+      "Yes"
+    );
+
+    if (message === "Yes") {
+      vscode.commands.executeCommand("workbench.action.reloadWindow");
+    }
   };
 }
 
-function saveProfile(config: Config, settingsHelper: SettingsHelper) {
+function saveProfile(
+  config: Config,
+  settingsHelper: SettingsHelper,
+  extensionsHelper: ExtensionHelper
+) {
   return async () => {
     let profiles = config.getProfiles();
 
@@ -52,7 +77,11 @@ function saveProfile(config: Config, settingsHelper: SettingsHelper) {
     }
 
     let userSettings = await settingsHelper.getUserSettings();
+
+    let extensions = extensionsHelper.getInstalled();
+
     await config.addProfileSettings(profile, userSettings);
+    await config.addExtensions(profile, extensions);
 
     vscode.window.showInformationMessage(`Profile ${profile} has been saved.`);
   };
@@ -79,6 +108,7 @@ function deleteProfile(config: Config) {
 
     await config.removeProfile(profile);
     await config.removeProfileSettings(profile);
+    await config.removeProfileExtensions(profile);
 
     await vscode.window.showInformationMessage(
       `Profile ${profile} has been deleted.`
@@ -87,20 +117,21 @@ function deleteProfile(config: Config) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  let settingsHelper = new SettingsHelper(context);
   let config = new Config();
+  let settingsHelper = new SettingsHelper(context);
+  let extensionsHelper = new ExtensionHelper(context, settingsHelper, config);
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       ContributedCommands.SelectProfile,
-      selectProfile(config, settingsHelper)
+      selectProfile(config, settingsHelper, extensionsHelper)
     )
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
       ContributedCommands.SaveProfile,
-      saveProfile(config, settingsHelper)
+      saveProfile(config, settingsHelper, extensionsHelper)
     )
   );
 

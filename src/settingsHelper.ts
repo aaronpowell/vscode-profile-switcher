@@ -14,11 +14,12 @@ export default class SettingsHelper {
   public isInsiders: boolean = false;
   public isOss: boolean = false;
   public isPortable: boolean = false;
-  public homeDir: string | undefined;
+  public homeDir: string;
   public USER_FOLDER: string;
 
   public PATH: string = "";
   public OsType: OsType = OsType.Windows;
+  public ExtensionFolder: string;
 
   public constructor(private context: vscode.ExtensionContext) {
     this.isInsiders = /insiders/.test(this.context.asAbsolutePath(""));
@@ -30,8 +31,12 @@ export default class SettingsHelper {
       process.platform === "linux" &&
       !!process.env.XDG_DATA_HOME;
     this.homeDir = isXdg
-      ? process.env.XDG_DATA_HOME
-      : process.env[process.platform === "win32" ? "USERPROFILE" : "HOME"];
+      ? process.env.XDG_DATA_HOME || ""
+      : process.env[process.platform === "win32" ? "USERPROFILE" : "HOME"] ||
+        "";
+    const configSuffix = `${isXdg ? "" : "."}vscode${
+      this.isInsiders ? "-insiders" : this.isOss ? "-oss" : ""
+    }`;
 
     if (!this.isPortable) {
       if (process.platform === "darwin") {
@@ -85,9 +90,15 @@ export default class SettingsHelper {
           console.error(e);
         }
       }
+      this.ExtensionFolder = path.join(
+        this.homeDir,
+        configSuffix,
+        "extensions"
+      );
       this.USER_FOLDER = this.PATH.concat("/User/");
     } else {
       this.USER_FOLDER = this.PATH.concat("/user-data/User/");
+      this.ExtensionFolder = this.PATH.concat("/extensions/");
     }
   }
 

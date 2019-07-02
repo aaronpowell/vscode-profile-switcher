@@ -2,7 +2,7 @@
   "name": "vscode-profile-switcher",
   "displayName": "Profile Switcher",
   "description": "Allows you to switch between different profiles you have created",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "preview": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "publisher": "aaronpowell",
@@ -67,12 +67,31 @@
         },
         "profileSwitcher.storage": {
           "type": "object",
-          "description": "These are the details for each profile that has been saved. Probably don't hand-edit this",
+          "description": "These are the settings for each profile that has been saved. Probably don't hand-edit this",
           "patternProperties": {
             ".*": {
               "type": "object"
             }
           }
+        },
+        "profileSwitcher.extensions": {
+          "type": "object",
+          "description": "These are the extensions for each profile that has been saved. Probably don't hand-edit this",
+          "patternProperties": {
+            ".*": {
+              "type": "array"
+            }
+          }
+        },
+        "profileSwitcher.extensionsIgnore": {
+          "type": "array",
+          "description": "Extensions that will not be removed when profiles are switches. Enter the profile ID like 'ms-vsliveshare.vsliveshare'.",
+          "default": [
+            "shan.code-settings-sync",
+            "ms-vsliveshare.vsliveshare",
+            "ms-vsliveshare.vsliveshare-audio",
+            "ms-vsliveshare.vsliveshare-pack"
+          ]
         }
       }
     }

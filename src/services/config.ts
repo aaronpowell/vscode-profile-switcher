@@ -1,5 +1,12 @@
 import * as vscode from "vscode";
-import { ConfigKey, ConfigProfilesKey, ConfigStorageKey } from "../constants";
+import {
+  ConfigKey,
+  ConfigProfilesKey,
+  ConfigStorageKey,
+  ConfigExtensionsKey,
+  ConfigExtensionsIgnoreKey
+} from "../constants";
+import { ExtensionInfo } from "./extensions";
 
 export interface Settings {
   [key: string]: number | string | boolean | object;
@@ -7,6 +14,10 @@ export interface Settings {
 
 export interface Storage {
   [key: string]: Settings;
+}
+
+interface ExtensionStorage {
+  [key: string]: ExtensionInfo[];
 }
 
 class Config {
@@ -22,6 +33,10 @@ class Config {
 
   public getProfileSettings(profile: string) {
     return this.getStorage()[profile];
+  }
+
+  public getProfileExtensions(profile: string) {
+    return this.getExtensions()[profile] || [];
   }
 
   private getStorage() {
@@ -86,6 +101,40 @@ class Config {
       storage,
       vscode.ConfigurationTarget.Global
     );
+  }
+
+  public addExtensions(profile: string, extensions: ExtensionInfo[]) {
+    let storage = this.getExtensions();
+    storage[profile] = extensions;
+    return this.updateExtensions(storage);
+  }
+
+  private getExtensions() {
+    let config = this.getConfig();
+
+    return config.get<ExtensionStorage>(ConfigExtensionsKey, {});
+  }
+
+  private updateExtensions(storage: ExtensionStorage) {
+    let config = this.getConfig();
+
+    return config.update(
+      ConfigExtensionsKey,
+      storage,
+      vscode.ConfigurationTarget.Global
+    );
+  }
+
+  public removeProfileExtensions(profile: string) {
+    let storage = this.getExtensions();
+    delete storage[profile];
+    return this.updateExtensions(storage);
+  }
+
+  public getIgnoredExtensions() {
+    let config = this.getConfig();
+
+    return config.get<string[]>(ConfigExtensionsIgnoreKey, []);
   }
 }
 

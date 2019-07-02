@@ -4,6 +4,10 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachan2gelog.com/) for recommendations on how to structure this file.
 
+## 0.3.0 - Unreleased
+
+- Working on support for enable/disable extensions as you change profiles (Issue [#2](https://github.com/aaronpowell/vscode-profile-switcher/issues/2))
+
 ## 0.2.0 - 2019-06-28
 
 - Rewriting internals
