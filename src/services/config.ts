@@ -24,7 +24,7 @@ interface ExtensionStorage {
 }
 
 class Config {
-  constructor(private context?: vscode.ExtensionContext) {}
+  public constructor(private context?: vscode.ExtensionContext) {}
 
   private getConfig() {
     return vscode.workspace.getConfiguration(ConfigKey);
