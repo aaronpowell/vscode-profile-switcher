@@ -49,6 +49,10 @@
         "title": "Profile Switcher: Select Profile"
       },
       {
+        "command": "extension.selectLiveShareProfile",
+        "title": "Profile Switcher: Select Live Share Profile"
+      },
+      {
         "command": "extension.saveProfile",
         "title": "Profile Switcher: Save Profile"
       },
@@ -73,6 +77,11 @@
               "type": "object"
             }
           }
+        },
+        "profileSwitcher.liveShareProfile": {
+          "type": "string",
+          "description": "Specifies the profile you'd like to use when you start a Live Share session. Defaults to using the current profile",
+          "default": null
         },
         "profileSwitcher.extensions": {
           "type": "object",
@@ -124,6 +133,7 @@
     "vscode": "^1.1.28"
   },
   "dependencies": {
-    "fs-extra": "^8.0.1"
+    "fs-extra": "^8.0.1",
+    "vsls": "^0.3.1291"
   }
 }

@@ -4,7 +4,10 @@ import {
   ConfigProfilesKey,
   ConfigStorageKey,
   ConfigExtensionsKey,
-  ConfigExtensionsIgnoreKey
+  ConfigExtensionsIgnoreKey,
+  ConfigLiveShareProfileKey,
+  ContextSettingCurrentProfile,
+  ContextSettingPreviousProfile
 } from "../constants";
 import { ExtensionInfo } from "./extensions";
 
@@ -21,8 +24,39 @@ interface ExtensionStorage {
 }
 
 class Config {
+  constructor(private context?: vscode.ExtensionContext) {}
+
   private getConfig() {
     return vscode.workspace.getConfiguration(ConfigKey);
+  }
+
+  public getLiveShareProfile() {
+    let config = this.getConfig();
+
+    return config.get<string | null>(ConfigLiveShareProfileKey, null);
+  }
+
+  public setLiveShareProfile(profile: string) {
+    let config = this.getConfig();
+
+    return config.update(ConfigLiveShareProfileKey, profile, vscode.ConfigurationTarget.Global);
+  }
+
+  public setCurrentProfile(profile: string) {
+    if (this.context) {
+      const previousProfile = this.context.globalState.get<string>(ContextSettingCurrentProfile);
+      this.setPreviousProfile(previousProfile);
+
+      this.context.globalState.update(ContextSettingCurrentProfile, profile);
+    }
+  }
+
+  public getPreviousProfile(): string | undefined {
+    return this.context && this.context.globalState.get(ContextSettingPreviousProfile);
+  }
+
+  public setPreviousProfile(profile: string | undefined) {
+    this.context && this.context.globalState.update(ContextSettingPreviousProfile, profile);
   }
 
   public getProfiles() {
