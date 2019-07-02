@@ -4,3 +4,4 @@ node_modules
 *.vsix
 .ionide
 test-output.xml
+.test-profiles
