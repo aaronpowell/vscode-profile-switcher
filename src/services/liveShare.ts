@@ -12,17 +12,12 @@ export async function initialize(
         return;
     }
 
-    const liveShareProfile = config.getLiveShareProfile();
-    if (!liveShareProfile) {
-        return;
-    }
-
-    // Check to see whether there was a lingering profile set
-    // (e.g. because the user closed VS Code while in a Live Share
-    // session), and if so, restore the right profile.
-    restorePreviousProfile(config, activateProfileHandler);
-
     liveShare.onDidChangeSession(e => {
+        const liveShareProfile = config.getLiveShareProfile();
+        if (!liveShareProfile) {
+            return;
+        }
+
         if (e.session.id) {
             activateProfileHandler(liveShareProfile);
         } else {

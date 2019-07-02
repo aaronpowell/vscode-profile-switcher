@@ -42,12 +42,12 @@ class Config {
     return config.update(ConfigLiveShareProfileKey, profile, vscode.ConfigurationTarget.Global);
   }
 
-  public setCurrentProfile(profile: string) {
+  public async setCurrentProfile(profile: string) {
     if (this.context) {
       const previousProfile = this.context.globalState.get<string>(ContextSettingCurrentProfile);
       this.setPreviousProfile(previousProfile);
 
-      this.context.globalState.update(ContextSettingCurrentProfile, profile);
+      await this.context.globalState.update(ContextSettingCurrentProfile, profile);
     }
   }
 

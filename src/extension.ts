@@ -13,7 +13,7 @@ async function activateProfile(
 ) {
   let msg = vscode.window.setStatusBarMessage("Switching profiles.");
 
-  config.setCurrentProfile(profile);
+  await config.setCurrentProfile(profile);
 
   let profileSettings = config.getProfileSettings(profile);
   await settingsHelper.updateUserSettings(profileSettings);
