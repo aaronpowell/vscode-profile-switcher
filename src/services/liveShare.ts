@@ -13,28 +13,21 @@ export async function initialize(
     }
 
     liveShare.onDidChangeSession(e => {
-        const liveShareProfile = config.getLiveShareProfile();
-        if (!liveShareProfile) {
-            return;
-        }
-
         if (e.session.id) {
+            const liveShareProfile = config.getLiveShareProfile();
+            if (!liveShareProfile) {
+                return;
+            }
+
             activateProfileHandler(liveShareProfile);
         } else {
-            restorePreviousProfile(config, activateProfileHandler);
+            const previousProfile = config.getPreviousProfile();
+            if (!previousProfile) {
+                return;
+            }
+
+            config.setPreviousProfile(undefined);
+            activateProfileHandler(previousProfile);
         }
     })
-}
-
-function restorePreviousProfile(
-    config: Config,
-    activateProfileHandler: (profile: string) => void
-) {
-    const previousProfile = config.getPreviousProfile();
-    if (!previousProfile) {
-        return;
-    }
-
-    config.setPreviousProfile(undefined);
-    activateProfileHandler(previousProfile);
 }
