@@ -3,5 +3,5 @@ node_modules
 .vscode-test/
 *.vsix
 .ionide
-test-output.xml
+test-results.xml
 .test-profiles
