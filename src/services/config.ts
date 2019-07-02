@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { ConfigKey, ConfigProfilesKey, ConfigStorageKey } from "../constants";
 
-type Storage = { [key: string]: any };
+interface Storage { [key: string]: any }
 
 class Config {
   private getConfig() {

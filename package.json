@@ -86,14 +86,19 @@
     "test:ci": "node ./node_modules/vscode/bin/test",
     "package": "npx vsce package",
     "publish": "npx vsce publish",
-    "lint": "tslint --project tsconfig.json -e src/*.d.ts -t verbose"
+    "lint": "eslint ./src --ext .js,.ts",
+    "lint-fix": "eslint ./src --ext .js,.ts --fix"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/fs-extra": "^7.0.0",
     "@types/mocha": "^2.2.42",
     "@types/node": "^11.13.0",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
     "chai": "^4.2.0",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
     "mocha-multi-reporters": "^1.1.7",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
