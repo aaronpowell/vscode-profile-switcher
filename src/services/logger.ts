@@ -6,11 +6,11 @@ export interface Logger {
 }
 
 class OutputChannelLogger implements Logger {
-  show(preserveFocus?: boolean | undefined): void {
+  public show(preserveFocus?: boolean | undefined): void {
     let oc = this.getChannel();
     oc.show(preserveFocus);
   }
-  appendLine(value: string): void {
+  public appendLine(value: string): void {
     let oc = this.getChannel();
 
     oc.appendLine(value);

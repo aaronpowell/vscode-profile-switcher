@@ -2,13 +2,13 @@ import * as vscode from "vscode";
 import { ExtensionId } from "../constants";
 import * as fs from "fs-extra";
 import { join } from "path";
-import SettingsHelper, { OsType } from "../settingsHelper";
+import SettingsHelper from "../settingsHelper";
 import Config from "./config";
 import { promisify } from "util";
-import * as child_process from "child_process";
+import * as childProcess from "child_process";
 import { Logger } from "./logger";
 
-const exec = promisify(child_process.exec);
+const exec = promisify(childProcess.exec);
 
 export class ExtensionInfo {
   public constructor(
