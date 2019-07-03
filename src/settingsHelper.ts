@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import * as os from "os";
 import * as path from "path";
 import { Settings } from "./services/config";
+import { jsonc } from "jsonc";
 
 export enum OsType {
   Windows = 1,
@@ -113,7 +114,9 @@ export default class SettingsHelper {
       return {};
     }
 
-    return await fs.readJSON(settingsPath, { encoding: "utf8" });
+    let fileContents = await fs.readFile(settingsPath, { encoding: "utf8" });
+
+    return jsonc.parse(fileContents);
   }
 
   public async updateUserSettings(update: Settings) {
@@ -121,9 +124,10 @@ export default class SettingsHelper {
 
     let newSettings = Object.assign({}, existingSettings, update);
 
-    await fs.writeJSON(this.getSettingsPath(), newSettings, {
-      encoding: "utf8",
-      spaces: 4
+    let settingsAsJson = jsonc.stringify(newSettings, { space: 4 });
+
+    await fs.writeFile(this.getSettingsPath(), settingsAsJson, {
+      encoding: "utf8"
     });
   }
 
