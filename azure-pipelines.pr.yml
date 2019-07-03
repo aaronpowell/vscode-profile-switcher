@@ -1,7 +1,9 @@
 trigger:
   branches:
-    include:
-    - master
+    exclude:
+      - master
+pr:
+- master
 
 jobs:
 - job: Linux
