@@ -63,7 +63,7 @@ function selectProfile(
       return;
     }
 
-    activateProfile(profile, config, settingsHelper, extensionsHelper);
+    await activateProfile(profile, config, settingsHelper, extensionsHelper);
   };
 }
 
