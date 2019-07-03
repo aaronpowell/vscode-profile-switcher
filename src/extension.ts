@@ -3,7 +3,54 @@ import SettingsHelper from "./settingsHelper";
 import ContributedCommands from "./commands";
 import Config from "./services/config";
 import ExtensionHelper from "./services/extensions";
-import logger from './services/logger';
+import logger from "./services/logger";
+import * as liveShare from "./services/liveShare";
+
+async function activateProfile(
+  profile: string,
+  config: Config,
+  settingsHelper: SettingsHelper,
+  extensionsHelper: ExtensionHelper
+) {
+  let msg = vscode.window.setStatusBarMessage("Switching profiles.");
+
+  await config.setCurrentProfile(profile);
+
+  let profileSettings = config.getProfileSettings(profile);
+  await settingsHelper.updateUserSettings(profileSettings);
+
+  let extensions = config.getProfileExtensions(profile);
+  await extensionsHelper.installExtensions(extensions);
+  await extensionsHelper.removeExtensions(extensions);
+
+  msg.dispose();
+
+  const message = await vscode.window.showInformationMessage(
+    "Do you want to reload and activate the extensions?",
+    "Yes"
+  );
+
+  if (message === "Yes") {
+    vscode.commands.executeCommand("workbench.action.reloadWindow");
+  }
+}
+
+async function promptProfile(config: Config): Promise<string | undefined> {
+  let profiles = config.getProfiles();
+
+  if (!profiles.length) {
+    await vscode.window.showInformationMessage(
+      "There are no profiles saved to switch to. First save a profile and then you can pick it"
+    );
+    return;
+  }
+
+  let profile = await vscode.window.showQuickPick(profiles, {
+    placeHolder: "Select a profile"
+  });
+
+  return profile;
+}
 
 function selectProfile(
   config: Config,
@@ -11,42 +58,23 @@ function selectProfile(
   extensionsHelper: ExtensionHelper
 ) {
   return async () => {
-    let profiles = config.getProfiles();
-
-    if (!profiles.length) {
-      await vscode.window.showInformationMessage(
-        "There are no profiles saved to switch to. First save a profile and then you can pick it"
-      );
-      return;
-    }
-
-    let profile = await vscode.window.showQuickPick(profiles, {
-      placeHolder: "Select a profile"
-    });
-
+    const profile = await promptProfile(config);
     if (!profile) {
       return;
     }
 
-    let msg = vscode.window.setStatusBarMessage("Switching profiles.");
+    activateProfile(profile, config, settingsHelper, extensionsHelper);
+  };
+}
 
-    let profileSettings = config.getProfileSettings(profile);
-    await settingsHelper.updateUserSettings(profileSettings);
-
-    let extensions = config.getProfileExtensions(profile);
-    await extensionsHelper.installExtensions(extensions, logger);
-    await extensionsHelper.removeExtensions(extensions, logger);
-
-    msg.dispose();
-
-    const message = await vscode.window.showInformationMessage(
-      "Do you want to reload and activate the extensions?",
-      "Yes"
-    );
-
-    if (message === "Yes") {
-      vscode.commands.executeCommand("workbench.action.reloadWindow");
+function selectLiveShareProfile(config: Config) {
+  return async () => {
+    const profile = await promptProfile(config);
+    if (!profile) {
+      return;
     }
+
+    await config.setLiveShareProfile(profile);
   };
 }
 
@@ -118,9 +146,16 @@ function deleteProfile(config: Config) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  let config = new Config();
+  let config = new Config(context);
   let settingsHelper = new SettingsHelper(context);
   let extensionsHelper = new ExtensionHelper(context, settingsHelper, config);
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      ContributedCommands.SelectLiveShareProfile,
+      selectLiveShareProfile(config)
+    )
+  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
@@ -142,4 +177,8 @@ export async function activate(context: vscode.ExtensionContext) {
       deleteProfile(config)
     )
   );
+
+  liveShare.initialize(context, config, (profile: string) => {
+    activateProfile(profile, config, settingsHelper, extensionsHelper);
+  });
 }

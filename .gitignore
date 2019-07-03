@@ -5,3 +5,4 @@ node_modules
 .ionide
 test-results.xml
 .test-profiles
+*.orig
