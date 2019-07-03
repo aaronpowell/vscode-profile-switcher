@@ -20,8 +20,8 @@ async function activateProfile(
   await settingsHelper.updateUserSettings(profileSettings);
 
   let extensions = config.getProfileExtensions(profile);
-  await extensionsHelper.installExtensions(extensions);
-  await extensionsHelper.removeExtensions(extensions);
+  await extensionsHelper.installExtensions(extensions, logger);
+  await extensionsHelper.removeExtensions(extensions, logger);
 
   msg.dispose();
 
@@ -178,7 +178,7 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
 
-  liveShare.initialize(context, config, (profile: string) => {
+  liveShare.initialize(config, (profile: string) => {
     activateProfile(profile, config, settingsHelper, extensionsHelper);
   });
 }

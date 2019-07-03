@@ -1,13 +1,11 @@
-import * as vscode from "vscode";
 import * as vsls from "vsls";
 import Config from "./config";
 
 export async function initialize(
-    context: vscode.ExtensionContext,
     config: Config,
     activateProfileHandler: (profile: string) => void
 ) {
-    // Check to see if the end-user has the Live Share 
+    // Check to see if the end-user has the Live Share
     // extension installed, and if not, exit early.
     const liveShare = await vsls.getApi();
     if (!liveShare) {
