@@ -38,7 +38,10 @@
         "--user-data-dir=${workspaceFolder}/.vscode-test/user"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "npm: watch"
+      "preLaunchTask": "npm: watch",
+      "env": {
+        "CODE_TESTS_DATA_DIR": "${workspaceFolder}/.vscode-test/user"
+      }
     }
   ]
 }
