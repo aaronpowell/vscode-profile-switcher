@@ -5,7 +5,8 @@ import {
   ConfigKey,
   ConfigProfilesKey,
   ConfigStorageKey,
-  ConfigExtensionsKey
+  ConfigExtensionsKey,
+  ConfigLiveShareProfileKey
 } from "../constants";
 import Config from "../services/config";
 import { ExtensionInfo } from "../services/extensions";
@@ -34,6 +35,13 @@ suite("save profile", () => {
   suite("settings", () => {
     const expectedProfileSettings = { foo: "bar" };
     const expectedUpdatedProfileSettings = { foo: "baz", a: "b" };
+    const profileSwitcherSettings = {
+      [`${ConfigKey}.${ConfigProfilesKey}`]: [],
+      [`${ConfigKey}.${ConfigStorageKey}`]: {},
+      [`${ConfigKey}.${ConfigExtensionsKey}`]: {},
+      [`${ConfigKey}.${ConfigExtensionsKey}`]: [],
+      [`${ConfigKey}.${ConfigLiveShareProfileKey}`]: ""
+    };
 
     teardown(async () => {
       let config = vscode.workspace.getConfiguration(ConfigKey);
@@ -71,6 +79,23 @@ suite("save profile", () => {
 
       let settings = config.getProfileSettings(expectedProfileName);
       assert.deepEqual(settings, expectedUpdatedProfileSettings);
+    });
+
+    test("saving profile doesn't include profileSwitcher settings", async () => {
+      var config = new Config();
+
+      await config.addProfileSettings(
+        expectedProfileName,
+        Object.assign({}, expectedProfileSettings, profileSwitcherSettings)
+      );
+
+      let settings = config.getProfileSettings(expectedProfileName);
+      Object.keys(profileSwitcherSettings).forEach(key =>
+        assert.isUndefined(
+          settings[key],
+          `The key "${key}" should have been removed`
+        )
+      );
     });
   });
 

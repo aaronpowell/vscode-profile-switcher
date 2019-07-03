@@ -77,7 +77,7 @@ suite("select profile", () => {
     assert.deepEqual(settings, expectedProfileSettings);
   });
 
-  test("storage contains the expected profile settings", () => {
+  test("storage contains the expected profile extensions", () => {
     let config = new Config();
 
     let extensions = config.getProfileExtensions(expectedProfileName);

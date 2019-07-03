@@ -39,24 +39,37 @@ class Config {
   public setLiveShareProfile(profile: string) {
     let config = this.getConfig();
 
-    return config.update(ConfigLiveShareProfileKey, profile, vscode.ConfigurationTarget.Global);
+    return config.update(
+      ConfigLiveShareProfileKey,
+      profile,
+      vscode.ConfigurationTarget.Global
+    );
   }
 
   public async setCurrentProfile(profile: string) {
     if (this.context) {
-      const previousProfile = this.context.globalState.get<string>(ContextSettingCurrentProfile);
+      const previousProfile = this.context.globalState.get<string>(
+        ContextSettingCurrentProfile
+      );
       this.setPreviousProfile(previousProfile);
 
-      await this.context.globalState.update(ContextSettingCurrentProfile, profile);
+      await this.context.globalState.update(
+        ContextSettingCurrentProfile,
+        profile
+      );
     }
   }
 
   public getPreviousProfile(): string | undefined {
-    return this.context && this.context.globalState.get(ContextSettingPreviousProfile);
+    return (
+      this.context &&
+      this.context.globalState.get(ContextSettingPreviousProfile)
+    );
   }
 
   public setPreviousProfile(profile: string | undefined) {
-    this.context && this.context.globalState.update(ContextSettingPreviousProfile, profile);
+    this.context &&
+      this.context.globalState.update(ContextSettingPreviousProfile, profile);
   }
 
   public getProfiles() {
@@ -107,14 +120,17 @@ class Config {
   }
 
   public addProfileSettings(profile: string, settings: Settings) {
-    // We don't want to save profile info in the profile storage
-    if (settings[`${ConfigKey}:${ConfigProfilesKey}`]) {
-      delete settings[`${ConfigKey}:${ConfigProfilesKey}`];
-    }
+    const deleteSetting = (key: string) => {
+      if (`${ConfigKey}.${key}` in settings) {
+        delete settings[`${ConfigKey}.${key}`];
+      }
+    };
 
-    if (settings[`${ConfigKey}:${ConfigStorageKey}`]) {
-      delete settings[`${ConfigKey}:${ConfigStorageKey}`];
-    }
+    deleteSetting(ConfigProfilesKey);
+    deleteSetting(ConfigStorageKey);
+    deleteSetting(ConfigExtensionsKey);
+    deleteSetting(ConfigExtensionsIgnoreKey);
+    deleteSetting(ConfigLiveShareProfileKey);
 
     let storage = this.getStorage();
     storage[profile] = settings;
