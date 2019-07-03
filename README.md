@@ -2,12 +2,12 @@
 
 [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)
 
-| Job                 | Status                                                                                                                                                                                                                                                                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Linux (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux&configuration=Linux%20node_10_x)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
-| Linux (Node 12.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux&configuration=Linux%20node_12_x)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
-| Windows (Node 10.x) | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Windows)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)                               |
-| macOS (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=macOS)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)                                 |
+| Job                 | Status                                                                                                                                                                                                                                                                                         |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Linux (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)   |
+| Linux (Node 12.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)   |
+| Windows (Node 10.x) | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Windows)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
+| macOS (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=macOS)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)   |
 
 [![Badge for version for Visual Studio Code extension aaronpowell.vscode-profile-switcher](https://vsmarketplacebadge.apphb.com/version/aaronpowell.vscode-profile-switcher.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
@@ -23,7 +23,7 @@ This extension allows you to define a number of settings profiles that you can e
 
 ## Features
 
-The extension introduces three new commands that you can use from the command panel. All commands are prefixed with `Profile Switcher`.
+The extension introduces four new commands that you can use from the command panel. All commands are prefixed with `Profile Switcher`.
 
 ![Demo of the extension in action](images/readme-demo.gif)
 
@@ -31,15 +31,36 @@ The extension introduces three new commands that you can use from the command pa
 
 This saved the current **user** settings with the name you provide. You can use this to create a new profile or you can update an existing profile. The profile, when saved, is done so against your user-level settings.
 
+Extensions that are installed are stored with the profile. See [Extensions](#extensions) for more information on how Extensions are handled.
+
 _Note: This looks at the settings at the **user** level and not the workspace._
+
 
 ### Select Profile
 
 This allows you to select a previously saved profile. It'll replace it at the **user** level, not the **workspace** level. It works by merging your saved settings over the top of your current settings.
 
+The extensions that are linked to the profile will be installed and extensions that weren't in the profile are removed. See [extensions](#extensions) for more information on how Extensions are handled.
+
 ### Delete Profile
 
 This removed a previously saved profile.
+
+### Select Live Share Profile
+
+This will set a previously saved profile as the default profile to be used on [VS Code Live Share](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=profileswitcher-github-aapowell).
+
+Once set, when you launch a Live Share session your profile will be automatically enabled, and then once your session ends the previous profile will be loaded. Thanks [@lostintangent](https://github.com/lostintangent) for [the PR that included it](https://github.com/aaronpowell/vscode-profile-switcher/pull/4).
+
+## Extensions
+
+A profile isn't just the settings you have enabled, but also the extensions that were installed. This allows you to create different profiles for different styles of development (e.g. a React profile and a Vue profile, loading their respective extensions only).
+
+When you switch profiles the extension will attempt to be intelligent about how the extensions are removed but moving them to the Profile Switcher [`globalStoragePath`](https://code.visualstudio.com/api/references/vscode-api#ExtensionContext) before removing them. Then, when you need to install the extensions again it will attempt to get them from that location rather than having to download them from the marketplace (it'll fallback to marketplace if required).
+
+### Always On Extensions
+
+There are some extensions you might always enabled, regardless of profile (such as Settings Sync). To support this there is a property called `extensionsIgnore` which is an array of extension ID's that will be ignored when switching profiles. By default it includes Settings Sync and Live Share.
 
 ## Changes
 
