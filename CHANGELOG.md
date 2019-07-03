@@ -7,6 +7,7 @@ Check [Keep a Changelog](http://keepachan2gelog.com/) for recommendations on how
 ## 0.3.0 - Unreleased
 
 - Working on support for enable/disable extensions as you change profiles (Issue [#2](https://github.com/aaronpowell/vscode-profile-switcher/issues/2))
+- Add support for setting a Live Share profile that is auto-activated (PR [#4](https://github.com/aaronpowell/vscode-profile-switcher/pull/4))
 
 ## 0.2.0 - 2019-06-28
 
