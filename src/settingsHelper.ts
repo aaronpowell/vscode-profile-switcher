@@ -126,4 +126,34 @@ export default class SettingsHelper {
       spaces: 4
     });
   }
+
+  public getCodeBinary() {
+    let binaryFullPath: string = process.argv0;
+    let codeInstallSuffix = "";
+    let codeCliPath = "";
+    if (this.OsType === OsType.Windows) {
+      if (this.isInsiders) {
+        codeInstallSuffix = "Code - Insiders";
+        codeCliPath = "bin/code-insiders";
+      } else {
+        codeInstallSuffix = "Code";
+        codeCliPath = "bin/code";
+      }
+    } else if (this.OsType === OsType.Linux) {
+      if (this.isInsiders) {
+        codeInstallSuffix = "code-insiders";
+        codeCliPath = "bin/code-insiders";
+      } else {
+        codeInstallSuffix = "code";
+        codeCliPath = "bin/code";
+      }
+    } else if (this.OsType === OsType.Mac) {
+      codeInstallSuffix = "Frameworks";
+      codeCliPath = "Resources/app/bin/code";
+    }
+    return `"${binaryFullPath.substr(
+      0,
+      binaryFullPath.lastIndexOf(codeInstallSuffix)
+    )}${codeCliPath}"`;
+  }
 }

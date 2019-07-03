@@ -3,6 +3,7 @@ import SettingsHelper from "./settingsHelper";
 import ContributedCommands from "./commands";
 import Config from "./services/config";
 import ExtensionHelper from "./services/extensions";
+import logger from './services/logger';
 
 function selectProfile(
   config: Config,
@@ -33,8 +34,8 @@ function selectProfile(
     await settingsHelper.updateUserSettings(profileSettings);
 
     let extensions = config.getProfileExtensions(profile);
-    await extensionsHelper.installExtensions(extensions);
-    await extensionsHelper.removeExtensions(extensions);
+    await extensionsHelper.installExtensions(extensions, logger);
+    await extensionsHelper.removeExtensions(extensions, logger);
 
     msg.dispose();
 
