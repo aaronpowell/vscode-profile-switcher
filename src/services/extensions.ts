@@ -2,8 +2,12 @@ import * as vscode from "vscode";
 import { ExtensionId } from "../constants";
 import * as fs from "fs-extra";
 import { join } from "path";
-import SettingsHelper from "../settingsHelper";
+import SettingsHelper, { OsType } from "../settingsHelper";
 import Config from "./config";
+import { promisify } from "util";
+import * as child_process from "child_process";
+
+const exec = promisify(child_process.exec);
 
 export class ExtensionInfo {
   public constructor(
@@ -94,7 +98,37 @@ class ExtensionHelper {
     await Promise.all(removes);
   }
 
-  private async installExtension(ext: ExtensionInfo) {
+  private getCodeBinary() {
+    let binaryFullPath: string = process.argv0;
+    let codeInstallSuffix = "";
+    let codeCliPath = "";
+    if (this.settings.OsType === OsType.Windows) {
+      if (this.settings.isInsiders) {
+        codeInstallSuffix = "Code - Insiders";
+        codeCliPath = "bin/code-insiders";
+      } else {
+        codeInstallSuffix = "Code";
+        codeCliPath = "bin/code";
+      }
+    } else if (this.settings.OsType === OsType.Linux) {
+      if (this.settings.isInsiders) {
+        codeInstallSuffix = "code-insiders";
+        codeCliPath = "bin/code-insiders";
+      } else {
+        codeInstallSuffix = "code";
+        codeCliPath = "bin/code";
+      }
+    } else if (this.settings.OsType === OsType.Mac) {
+      codeInstallSuffix = "Frameworks";
+      codeCliPath = "Resources/app/bin/code";
+    }
+    return `"${binaryFullPath.substr(
+      0,
+      binaryFullPath.lastIndexOf(codeInstallSuffix)
+    )}${codeCliPath}"`;
+  }
+
+  private async installExtension(ext: ExtensionInfo, binaryFullPath: string) {
     const name = `${ext.publisherName}.${ext.name}-${ext.version}`;
 
     const backupPath = join(this.context.globalStoragePath, name);
@@ -113,7 +147,9 @@ class ExtensionHelper {
 
     if (!installed) {
       try {
-        // todo: install via the VS Code CLI
+        const cli = `${binaryFullPath} --install-extension ${ext.publisherId}`;
+        await exec(cli);
+        console.log(`Profile Switcher: Installed ${name}.`);
       } catch (e) {
         console.log(
           `Profile Switcher: Error installing ${name} from marketplace.`
@@ -134,7 +170,9 @@ class ExtensionHelper {
       await fs.mkdir(this.context.globalStoragePath);
     }
 
-    let installs = newExtensions.map(ext => this.installExtension(ext));
+    let installs = newExtensions.map(ext =>
+      this.installExtension(ext, this.getCodeBinary())
+    );
 
     await Promise.all(installs);
   }
