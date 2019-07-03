@@ -107,7 +107,7 @@ class ExtensionHelper {
 
     let removes = extensionsToRemove.map((ext, i) => {
       logger.appendLine(
-        `Removing ${ext.name} (${i} of ${extensionsToRemove.length})`
+        `Removing ${ext.name} (${i + 1} of ${extensionsToRemove.length})`
       );
       logger.appendLine("");
       this.removeExtension(ext, logger);
@@ -177,7 +177,7 @@ class ExtensionHelper {
 
     let installs = newExtensions.map((ext, i) => {
       logger.appendLine(
-        `Installing ${ext.name} (${i} of ${newExtensions.length})`
+        `Installing ${ext.name} (${i + 1} of ${newExtensions.length})`
       );
       logger.appendLine("");
       return this.installExtension(ext, this.settings.getCodeBinary(), logger);
