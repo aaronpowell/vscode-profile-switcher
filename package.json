@@ -136,7 +136,7 @@
   },
   "dependencies": {
     "fs-extra": "^8.0.1",
-    "jsonc": "^2.0.0",
+    "jsonc-parser": "^2.1.0",
     "vsls": "^0.3.1291"
   }
 }

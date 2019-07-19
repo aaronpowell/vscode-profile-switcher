@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import * as os from "os";
 import * as path from "path";
 import { Settings } from "./services/config";
-import { jsonc } from "jsonc";
+import * as jsonc from "jsonc-parser";
 
 export enum OsType {
   Windows = 1,
@@ -124,7 +124,7 @@ export default class SettingsHelper {
 
     let newSettings = Object.assign({}, existingSettings, update);
 
-    let settingsAsJson = jsonc.stringify(newSettings, { space: 4 });
+    let settingsAsJson = JSON.stringify(newSettings, null, 4);
 
     await fs.writeFile(this.getSettingsPath(), settingsAsJson, {
       encoding: "utf8"
