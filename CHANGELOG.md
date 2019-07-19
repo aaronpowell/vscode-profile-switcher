@@ -4,6 +4,12 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.1] - 2019-07-19
+
+### Changed
+
+- Fixing bug [#8](https://github.com/aaronpowell/vscode-profile-switcher/issues/8) by changing the JSON parser used
+
 ## [0.3.0] - 2019-07-03
 
 ### Added
