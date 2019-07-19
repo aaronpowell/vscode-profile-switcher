@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Changed
 
 - Fixing bug [#8](https://github.com/aaronpowell/vscode-profile-switcher/issues/8) by changing the JSON parser used
+- Fixing bug that meant the removal of extensions was reported as complete before it was really complete. May be an underlying cause of issue [#7](https://github.com/aaronpowell/vscode-profile-switcher/issues/7)
 
 ## [0.3.0] - 2019-07-03
 
