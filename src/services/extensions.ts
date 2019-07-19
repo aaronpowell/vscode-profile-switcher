@@ -17,7 +17,7 @@ export class ExtensionInfo {
     public publisherName: string,
     public version: string,
     public name: string
-  ) {}
+  ) { }
 }
 
 class ExtensionHelper {
@@ -25,7 +25,7 @@ class ExtensionHelper {
     private context: vscode.ExtensionContext,
     private settings: SettingsHelper,
     private config: Config
-  ) {}
+  ) { }
 
   public getInstalled() {
     let ignoredExtensions = this.config.getIgnoredExtensions();
@@ -110,7 +110,7 @@ class ExtensionHelper {
         `Removing ${ext.name} (${i + 1} of ${extensionsToRemove.length})`
       );
       logger.appendLine("");
-      this.removeExtension(ext, logger);
+      return this.removeExtension(ext, logger);
     });
 
     await Promise.all(removes);
