@@ -3,6 +3,8 @@ trigger:
     include:
     - master
 
+pr: none
+
 jobs:
 - job: Linux
   pool:
