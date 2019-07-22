@@ -27,6 +27,12 @@ steps:
     inputs:
       codeCoverageTool: 'cobertura'
       summaryFileLocation: coverage/cobertura-coverage.xml
+      reportDirectory: coverage/lcov-report
+    condition: succeededOrFailed()
+
+  - script: |
+      bash <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN) -f coverage/cobertura-coverage.xml
+    displayName: 'codecov'
     condition: succeededOrFailed()
 
   - task: CopyFiles@2
