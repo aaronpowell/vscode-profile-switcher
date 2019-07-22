@@ -28,3 +28,15 @@ steps:
       codeCoverageTool: 'cobertura'
       summaryFileLocation: coverage/cobertura-coverage.xml
     condition: succeededOrFailed()
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/coverage'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+    displayName: 'Copy coverage output'
+
+  - task: PublishPipelineArtifact@0
+    displayName: 'Publish Coverage Artifact'
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: coverage
