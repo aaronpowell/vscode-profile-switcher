@@ -1,9 +1,8 @@
 # VS Code Profile Switcher
 
-[![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)
-
 | Job                 | Status                                                                                                                                                                                                                                                                                         |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overall             | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)                 |
 | Linux (Node 10.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)   |
 | Linux (Node 12.x)   | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Linux)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master)   |
 | Windows (Node 10.x) | [![Build Status](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_apis/build/status/aaronpowell.vscode-profile-switcher?branchName=master&jobName=Windows)](https://dev.azure.com/aaronpowell/VS%20Code%20Profile%20Switcher/_build/latest?definitionId=27&branchName=master) |
@@ -11,6 +10,9 @@
 
 [![Badge for version for Visual Studio Code extension aaronpowell.vscode-profile-switcher](https://vsmarketplacebadge.apphb.com/version/aaronpowell.vscode-profile-switcher.svg?color=blue&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating/aaronpowell.vscode-profile-switcher.svg?color=blue&style=flat-square)](https://marketplace.visualstudio.com/items?itemName=aaronpowell.vscode-profile-switcher&wt.mc_id=profileswitcher-github-aapowell) [![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?color=blue&style=flat-square)](http://opensource.org/licenses/MIT)
+[![Live Share](https://img.shields.io/badge/Live_Share-enabled-8F80CF.svg?color=blue&style=flat-square&logo=visual-studio-code)](https://visualstudio.microsoft.com/services/live-share/?wt.mc_id=profileswitcher-github-aapowell)
+[![codecov](https://codecov.io/gh/aaronpowell/vscode-profile-switcher/branch/master/graph/badge.svg)](https://codecov.io/gh/aaronpowell/vscode-profile-switcher)
+
 
 This extension allows you to define a number of settings profiles that you can easily switch between. The original idea for this extension came from my desire to have an easy way for me to switch my VS Code to a setup that was better optimised for presenting (changed themes, increase font size, etc).
 
@@ -85,5 +87,5 @@ This was my first time trying to build an extension for VS Code and wouldn't hav
 
 - The VS Code team's [in depth guide to extensions](https://code.visualstudio.com/api/get-started/your-first-extension?wt.mc_id=profileswitcher-github-aapowell)
 - Looking through the [example extensions](https://github.com/Microsoft/vscode-extension-samples) on the VS Code team's GitHub
-- [John Papa's Peacock extension](https://raw.githubusercontent.com/johnpapa/vscode-peacock)
+- [John Papa's Peacock extension](https://github.com/johnpapa/vscode-peacock)
 - [VS Code Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync) that helped me understand how to find settings on a machine

@@ -4,6 +4,17 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.2] - 2019-07-22
+
+### Added
+
+- Code coverage via istanbul
+- Code coverage reports on [codecov.io](https://codecov.io/gh/aaronpowell/vscode-profile-switcher)
+
+### Changed
+
+- Changed the test coverage to use `vscode-test` not `vscode`
+
 ## [0.3.1] - 2019-07-19
 
 ### Changed
