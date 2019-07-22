@@ -31,7 +31,7 @@ steps:
     condition: succeededOrFailed()
 
   - bash: |
-      bash <(curl https://codecov.io/bash) -t $(TOKEN) -f coverage/cobertura-coverage.xml
+      bash <(curl https://codecov.io/bash) -t $TOKEN -f coverage/cobertura-coverage.xml
     displayName: 'codecov'
     condition: succeededOrFailed()
     env:
