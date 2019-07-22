@@ -12,13 +12,19 @@ steps:
     inputs:
       command: custom
       verbose: false
-      customCommand: 'run test:ci'
+      customCommand: 'run test-coverage'
     env:
       DISPLAY: :10
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
     inputs:
-      testResultsFiles: '*-results.xml'
+      testResultsFiles: 'out-cov/*-results.xml'
       testRunTitle: '$(Agent.OS)'
+    condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: coverage/cobertura-coverage.xml
     condition: succeededOrFailed()

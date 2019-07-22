@@ -34,7 +34,7 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
         "--user-data-dir=${workspaceFolder}/.vscode-test/user"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],

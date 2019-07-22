@@ -1,8 +1,8 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import { assert } from "chai";
 import * as vscode from "vscode";
-import Config from "../services/config";
-import SettingsHelper from "../settingsHelper";
+import Config from "../../services/config";
+import SettingsHelper from "../../settingsHelper";
 
 class MockMemento implements vscode.Memento {
   public get<T>(key: string): T | undefined;
@@ -50,19 +50,19 @@ suite("end to end testing", () => {
 
   let mockContext = new MockContext();
 
-  setup(async function() {
+  setup(async function () {
     this.settingsHelper = new SettingsHelper(mockContext);
     this.defaultSettings = await this.settingsHelper.getUserSettings();
     this.config = new Config();
   });
 
-  teardown(async function() {
+  teardown(async function () {
     await this.settingsHelper.updateUserSettings(this.defaultSettings);
     await this.config.removeProfile(profileName);
     await this.config.removeProfileSettings(profileName);
   });
 
-  test("can change the vscode layout based on profile", async function() {
+  test("can change the vscode layout based on profile", async function () {
     await this.config.addProfile(profileName);
     await this.config.addProfileSettings(profileName, profileSettings);
 

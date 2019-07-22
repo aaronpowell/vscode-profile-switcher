@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-explicit-any: "off" */
 import { assert } from "chai";
 import * as vscode from "vscode";
-import { ExtensionId } from "../constants";
+import { ExtensionId } from "../../constants";
 
 suite("basic extension tests", () => {
   test("extension is registered", () => {

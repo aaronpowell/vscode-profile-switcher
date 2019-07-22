@@ -6,9 +6,9 @@ import {
   ConfigProfilesKey,
   ConfigStorageKey,
   ConfigExtensionsKey
-} from "../constants";
-import Config from "../services/config";
-import { ExtensionInfo } from "../services/extensions";
+} from "../../constants";
+import Config from "../../services/config";
+import { ExtensionInfo } from "../../services/extensions";
 
 suite("remove profile", () => {
   const expectedProfileName = "test1";

@@ -7,9 +7,9 @@ import {
   ConfigStorageKey,
   ConfigExtensionsKey,
   ConfigLiveShareProfileKey
-} from "../constants";
-import Config from "../services/config";
-import { ExtensionInfo } from "../services/extensions";
+} from "../../constants";
+import Config from "../../services/config";
+import { ExtensionInfo } from "../../services/extensions";
 
 suite("save profile", () => {
   const expectedProfileName = "test1";

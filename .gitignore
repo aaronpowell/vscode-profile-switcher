@@ -6,3 +6,5 @@ node_modules
 test-results.xml
 .test-profiles
 *.orig
+coverage
+out-cov
