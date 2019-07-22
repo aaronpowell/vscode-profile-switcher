@@ -30,10 +30,12 @@ steps:
       reportDirectory: coverage/lcov-report
     condition: succeededOrFailed()
 
-  - script: |
-      bash <(curl https://codecov.io/bash) -t $(CODECOV_TOKEN) -f coverage/cobertura-coverage.xml
+  - bash: |
+      bash <(curl https://codecov.io/bash) -t $(TOKEN) -f coverage/cobertura-coverage.xml
     displayName: 'codecov'
     condition: succeededOrFailed()
+    env:
+      TOKEN: $(CODECOV_TOKEN)
 
   - task: CopyFiles@2
     inputs:
