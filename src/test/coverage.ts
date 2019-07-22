@@ -9,6 +9,13 @@ import * as path from 'path';
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
 
+function ensureDir(dirname: string): void {
+  if (fs.existsSync(dirname)) {
+    return;
+  }
+  ensureDir(path.dirname(dirname));
+  fs.mkdirSync(dirname);
+}
 
 function safeWriteFile(filePath: string, contents: Buffer | string): void {
   ensureDir(path.dirname(filePath));
@@ -17,14 +24,6 @@ function safeWriteFile(filePath: string, contents: Buffer | string): void {
 
 function copyFile(inputPath: string, outputPath: string): void {
   safeWriteFile(outputPath, fs.readFileSync(inputPath));
-}
-
-function ensureDir(dirname: string): void {
-  if (fs.existsSync(dirname)) {
-    return;
-  }
-  ensureDir(path.dirname(dirname));
-  fs.mkdirSync(dirname);
 }
 
 function _rreaddir(dirname: string, relativeTo: string, result: string[]): void {
