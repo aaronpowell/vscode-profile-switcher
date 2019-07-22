@@ -20,7 +20,7 @@ steps:
     displayName: 'Publish Test Results'
     inputs:
       testResultsFiles: 'out-cov/*-results.xml'
-      testRunTitle: '$(Agent.OS)'
+      testRunTitle: '$(Agent.OS)-$(node_version)'
     condition: succeededOrFailed()
 
   - task: PublishCodeCoverageResults@1
@@ -39,4 +39,4 @@ steps:
     displayName: 'Publish Coverage Artifact'
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
-      artifactName: coverage
+      artifactName: 'coverage-$(Agent.OS)-$(node_version)'
