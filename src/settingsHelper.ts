@@ -23,9 +23,9 @@ export default class SettingsHelper {
   public ExtensionFolder: string;
 
   public constructor(private context: vscode.ExtensionContext) {
-    this.isInsiders = /insiders/.test(this.context.asAbsolutePath(""));
+    this.isInsiders = /insiders/.test(process.execPath.toLowerCase());
     this.isPortable = process.env.VSCODE_PORTABLE ? true : false;
-    this.isOss = /\boss\b/.test(this.context.asAbsolutePath(""));
+    this.isOss = /\boss\b/.test(process.execPath.toLowerCase());
 
     const isXdg =
       !this.isInsiders &&
@@ -34,10 +34,10 @@ export default class SettingsHelper {
     this.homeDir = isXdg
       ? process.env.XDG_DATA_HOME || ""
       : process.env[process.platform === "win32" ? "USERPROFILE" : "HOME"] ||
-        "";
+      "";
     const configSuffix = `${isXdg ? "" : "."}vscode${
       this.isInsiders ? "-insiders" : this.isOss ? "-oss" : ""
-    }`;
+      }`;
 
     if (!this.isPortable) {
       if (process.platform === "darwin") {
