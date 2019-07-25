@@ -2,7 +2,7 @@
   "name": "vscode-profile-switcher",
   "displayName": "Profile Switcher",
   "description": "Allows you to switch between different profiles you have created",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "preview": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "publisher": "aaronpowell",
