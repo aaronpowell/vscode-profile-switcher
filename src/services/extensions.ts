@@ -142,7 +142,8 @@ class ExtensionHelper {
     if (!installed) {
       try {
         const cli = `${binaryFullPath} --install-extension ${ext.publisherId}`;
-        await exec(cli);
+        let result = await exec(cli);
+        logger.appendLine(result.stdout);
         logger.appendLine(
           `Extension ${name} was installed from the marketplace.`
         );
@@ -175,15 +176,15 @@ class ExtensionHelper {
     logger.appendLine("");
     logger.appendLine("");
 
-    let installs = newExtensions.map((ext, i) => {
+    let codeBinary = this.settings.getCodeBinary();
+    for (let i = 0; i < newExtensions.length; i++) {
+      let ext = newExtensions[i];
       logger.appendLine(
         `Installing ${ext.name} (${i + 1} of ${newExtensions.length})`
       );
       logger.appendLine("");
-      return this.installExtension(ext, this.settings.getCodeBinary(), logger);
-    });
-
-    await Promise.all(installs);
+      await this.installExtension(ext, codeBinary, logger);
+    }
   }
 }
 
