@@ -4,6 +4,12 @@ All notable changes to the "vscode-profile-switcher" extension will be documente
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.3] - 2019-07-23
+
+### Changed
+
+- Extension install from marketplace now happens sequentially, not in parallel. Parallel installs often got conflicts writing to the logfile and the extensions would fail to install
+
 ## [0.3.2] - 2019-07-22
 
 ### Added
