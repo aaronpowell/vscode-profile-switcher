@@ -10,6 +10,7 @@ import {
   ContextSettingPreviousProfile
 } from "../constants";
 import { ExtensionInfo } from "./extensions";
+import ContributedCommands from "../commands";
 
 export interface Settings {
   [key: string]: number | string | boolean | object;
@@ -57,7 +58,27 @@ class Config {
         ContextSettingCurrentProfile,
         profile
       );
+
+      await this.showStatusBarCurrentProfile();
     }
+  }
+
+  private _statusBarItem : any;
+
+  public async showStatusBarCurrentProfile() {
+    if (this.context) {
+      const profile = this.context.globalState.get<string>(
+        ContextSettingCurrentProfile
+      );
+
+      if (!this._statusBarItem) {
+        this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+        this._statusBarItem.command = ContributedCommands.SelectProfile;
+      }
+      this._statusBarItem.text = `Profile: ${profile}`;
+      this._statusBarItem.show();
+    }
+
   }
 
   public getPreviousProfile(): string | undefined {
