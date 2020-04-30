@@ -140,7 +140,7 @@
     "istanbul-lib-report": "^2.0.8",
     "istanbul-lib-source-maps": "^3.0.6",
     "istanbul-reports": "^2.2.6",
-    "mocha": "^6.2.0",
+    "mocha": "^7.1.2",
     "mocha-multi-reporters": "^1.1.7",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",

@@ -10,6 +10,7 @@ import {
   ContextSettingPreviousProfile
 } from "../constants";
 import { ExtensionInfo } from "./extensions";
+import ContributedCommands from "../commands";
 
 export interface Settings {
   [key: string]: number | string | boolean | object;
@@ -57,7 +58,27 @@ class Config {
         ContextSettingCurrentProfile,
         profile
       );
+
+      await this.showStatusBarCurrentProfile();
     }
+  }
+
+  private _statusBarItem : any;
+
+  public async showStatusBarCurrentProfile() {
+    if (this.context) {
+      const profile = this.context.globalState.get<string>(
+        ContextSettingCurrentProfile
+      );
+
+      if (!this._statusBarItem) {
+        this._statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+        this._statusBarItem.command = ContributedCommands.SelectProfile;
+      }
+      this._statusBarItem.text = `Profile: ${profile}`;
+      this._statusBarItem.show();
+    }
+
   }
 
   public getPreviousProfile(): string | undefined {
@@ -137,10 +158,19 @@ class Config {
     return this.updateStorage(storage);
   }
 
+  private deleteStorage(storage: Storage | ExtensionStorage, profile: string) {
+    return Object.keys(storage)
+    .filter(sKey => sKey != profile)
+    .reduce((obj: any, key: string)=> {
+      obj[key] = storage[key];
+      return obj;
+    },{});
+  }
+
   public removeProfileSettings(profile: string) {
-    let storage = this.getStorage();
-    delete storage[profile];
-    return this.updateStorage(storage);
+    const storage = this.getStorage();
+    const filteredStorage = this.deleteStorage(storage, profile)
+    return this.updateStorage(filteredStorage);
   }
 
   private updateStorage(storage: Storage) {
@@ -176,9 +206,9 @@ class Config {
   }
 
   public removeProfileExtensions(profile: string) {
-    let storage = this.getExtensions();
-    delete storage[profile];
-    return this.updateExtensions(storage);
+    const storage = this.getExtensions();
+    const filteredStorage = this.deleteStorage(storage, profile);
+    return this.updateExtensions(filteredStorage);
   }
 
   public getIgnoredExtensions() {

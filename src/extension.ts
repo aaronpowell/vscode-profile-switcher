@@ -181,4 +181,6 @@ export async function activate(context: vscode.ExtensionContext) {
   liveShare.initialize(config, (profile: string) => {
     activateProfile(profile, config, settingsHelper, extensionsHelper);
   });
+
+  config.showStatusBarCurrentProfile();
 }
