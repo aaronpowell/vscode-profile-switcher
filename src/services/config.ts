@@ -27,6 +27,7 @@ class Config {
   public constructor(private context?: vscode.ExtensionContext) {}
 
   private getConfig() {
+    // has to be a dinstinction between pulling workspace configs and user configs
     return vscode.workspace.getConfiguration(ConfigKey);
   }
 
