@@ -4,6 +4,7 @@ import * as os from "os";
 import * as path from "path";
 import { Settings } from "./services/config";
 import * as jsonc from "jsonc-parser";
+import { ConfigKey, ConfigStorageKey } from "./constants";
 
 export enum OsType {
   Windows = 1,
@@ -107,6 +108,20 @@ export default class SettingsHelper {
     return path.join(this.USER_FOLDER, "settings.json");
   }
 
+  public getWorkspaceSettingsPath() {
+    if (this.hasOpenWorkspace()) {
+      // probably don't want to cast to any if I can avoid it...
+      return (vscode.workspace as any).workspaceFile.path;
+    } else {
+      return null;
+    }
+  }
+
+  public hasOpenWorkspace() {
+    // probably don't want to cast to any if I can avoid it...
+    return !!(vscode.workspace as any).workspaceFile;
+  }
+
   public async getUserSettings() {
     let settingsPath = this.getSettingsPath();
 
@@ -119,9 +134,57 @@ export default class SettingsHelper {
     return jsonc.parse(fileContents);
   }
 
+  public async getExistingWorkspaceSettings() {
+    let settingsPath = this.getWorkspaceSettingsPath();
+
+    if (!(await fs.pathExists(settingsPath))) {
+      return {};
+    }
+
+    let fileContents = await fs.readFile(settingsPath, { encoding: "utf8" });
+
+    return jsonc.parse(fileContents);
+  }
+
+  public async getProfileSettings(profile: string, combinedSettings: Settings): Promise<Settings> {
+    let userSettings = await this.getUserSettings();
+    let storedProfileSettings = userSettings[ConfigKey + "." + ConfigStorageKey][profile];
+    let profileSettings: any = { ...combinedSettings };
+
+    let storedKeys = Object.keys(storedProfileSettings);
+
+    for (let key of storedKeys) {
+      if (storedProfileSettings[key] !== combinedSettings[key]) {
+        profileSettings[key] = storedProfileSettings[key];
+      }
+    }
+
+    return profileSettings;
+  }
+
+  public async getWorkspaceSettings(profile: string, combinedSettings: Settings): Promise<any> { // might be able to change this to Settings model
+    let userSettings = await this.getUserSettings();
+    let storedProfileSettings = userSettings[ConfigKey + "." + ConfigStorageKey][profile];
+    let workspaceSettings: any = {};
+
+    let storedKeys = Object.keys(storedProfileSettings);
+
+    for (let key of storedKeys) {
+      // TODO: update this to do a deeper, recursive check. For now it should at least work for basic settings
+      if (storedProfileSettings[key] !== combinedSettings[key]) {
+        workspaceSettings[key] = combinedSettings[key];
+      }
+    }
+
+    return workspaceSettings;
+  }
+
   public async updateUserSettings(update: Settings) {
     let existingSettings = await this.getUserSettings();
 
+    // I can check for differences between existingSettings' settings in the profileSwitcher.storage block and update,
+    // and any differences can be assumed to be workspace-specific settings that should update the workspace json file
+    // instead of the settings.json file
     let newSettings = Object.assign({}, existingSettings, update);
 
     let settingsAsJson = JSON.stringify(newSettings, null, 4);
@@ -129,6 +192,16 @@ export default class SettingsHelper {
     await fs.writeFile(this.getSettingsPath(), settingsAsJson, {
       encoding: "utf8"
     });
+  }
+
+  public async updateWorkspaceSettings(update: Settings) {
+    let existingSettings = await this.getExistingWorkspaceSettings();
+
+    existingSettings.settings = Object.assign({}, existingSettings.settings, update);
+
+    let settingsAsJson = JSON.stringify(existingSettings, null, 4);
+
+    await fs.writeFile(this.getWorkspaceSettingsPath(), settingsAsJson, { encoding: "utf8" });
   }
 
   public getCodeBinary() {
