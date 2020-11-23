@@ -11,7 +11,7 @@ variables:
 jobs:
 - job: Linux
   pool:
-    name: Hosted Ubuntu 1604
+    vmImage: 'ubuntu-latest'
     demands: npm
   strategy:
     matrix:
@@ -27,7 +27,7 @@ jobs:
 
 - job: Windows
   pool:
-    name: Hosted VS2017
+    vmImage: 'windows-latest'
     demands: npm
   strategy:
     matrix:
@@ -40,7 +40,7 @@ jobs:
 
 - job: macOS
   pool:
-    name: Hosted macOS
+    vmImage: 'macos-latest'
     demands: npm
   strategy:
     matrix:
