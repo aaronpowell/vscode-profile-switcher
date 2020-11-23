@@ -1,13 +1,13 @@
-import * as iLibInstrument from 'istanbul-lib-instrument';
-import * as iLibCoverage from 'istanbul-lib-coverage';
-import * as iLibSourceMaps from 'istanbul-lib-source-maps';
-import * as iLibReport from 'istanbul-lib-report';
-import * as iReports from 'istanbul-reports';
+import * as iLibInstrument from "istanbul-lib-instrument";
+import * as iLibCoverage from "istanbul-lib-coverage";
+import * as iLibSourceMaps from "istanbul-lib-source-maps";
+import * as iLibReport from "istanbul-lib-report";
+import * as iReports from "istanbul-reports";
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
-const REPO_ROOT = path.resolve(__dirname, '../..');
+const REPO_ROOT = path.resolve(__dirname, "../..");
 
 function ensureDir(dirname: string): void {
   if (fs.existsSync(dirname)) {
@@ -26,7 +26,11 @@ function copyFile(inputPath: string, outputPath: string): void {
   safeWriteFile(outputPath, fs.readFileSync(inputPath));
 }
 
-function _rreaddir(dirname: string, relativeTo: string, result: string[]): void {
+function _rreaddir(
+  dirname: string,
+  relativeTo: string,
+  result: string[]
+): void {
   const entries = fs.readdirSync(dirname);
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
@@ -45,9 +49,9 @@ function rreaddir(dirname: string): string[] {
   return result;
 }
 
-export function instrument() {
+export function instrument(): void {
   const instrumenter = iLibInstrument.createInstrumenter();
-  const files = rreaddir(path.resolve(REPO_ROOT, 'out'));
+  const files = rreaddir(path.resolve(REPO_ROOT, "out"));
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -56,8 +60,8 @@ export function instrument() {
       continue;
     }
 
-    const inputPath = path.resolve(REPO_ROOT, 'out', files[i]);
-    const outputPath = path.resolve(REPO_ROOT, 'out-cov', files[i]);
+    const inputPath = path.resolve(REPO_ROOT, "out", files[i]);
+    const outputPath = path.resolve(REPO_ROOT, "out-cov", files[i]);
 
     if (!/\.js$/.test(file) || /(^|[\\/])test[\\/]/.test(file)) {
       // console.log(`copying ${inputPath}`);
@@ -77,14 +81,14 @@ export function instrument() {
     const instrumentedCode = instrumenter.instrumentSync(
       fs.readFileSync(inputPath).toString(),
       inputPath,
-      map,
+      map
     );
     safeWriteFile(outputPath, instrumentedCode);
   }
 }
 
 export function createReport(): void {
-  const global = new Function('return this')();
+  const global = new Function("return this")();
 
   const mapStore = iLibSourceMaps.createSourceMapStore();
   const coverageMap = iLibCoverage.createCoverageMap(global.__coverage__);
@@ -103,6 +107,11 @@ export function createReport(): void {
     watermarks,
   });
 
-  const reports = [iReports.create('json'), iReports.create('lcov'), iReports.create('html'), iReports.create('cobertura')];
-  reports.forEach(report => tree.visit(report, context));
+  const reports = [
+    iReports.create("json"),
+    iReports.create("lcov"),
+    iReports.create("html"),
+    iReports.create("cobertura"),
+  ];
+  reports.forEach((report) => tree.visit(report, context));
 }

@@ -46,7 +46,7 @@ async function promptProfile(config: Config): Promise<string | undefined> {
   }
 
   const profile = await vscode.window.showQuickPick(profiles, {
-    placeHolder: "Select a profile"
+    placeHolder: "Select a profile",
   });
 
   return profile;
@@ -89,13 +89,13 @@ function saveProfile(
     let profile = await vscode.window.showQuickPick(
       [...profiles, "New profile"],
       {
-        placeHolder: "Select a profile"
+        placeHolder: "Select a profile",
       }
     );
 
     if (!profile || profile === "New profile") {
       profile = await vscode.window.showInputBox({
-        placeHolder: "Enter the profile name"
+        placeHolder: "Enter the profile name",
       });
 
       if (!profile) {
@@ -128,7 +128,7 @@ function deleteProfile(config: Config) {
     }
 
     const profile = await vscode.window.showQuickPick(profiles, {
-      placeHolder: "Select a profile"
+      placeHolder: "Select a profile",
     });
 
     if (!profile) {
@@ -145,7 +145,9 @@ function deleteProfile(config: Config) {
   };
 }
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(
+  context: vscode.ExtensionContext
+): Promise<void> {
   const config = new Config(context);
   const settingsHelper = new SettingsHelper(context);
   const extensionsHelper = new ExtensionHelper(context, settingsHelper, config);

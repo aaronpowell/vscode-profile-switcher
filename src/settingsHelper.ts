@@ -107,7 +107,7 @@ export default class SettingsHelper {
     return path.join(this.USER_FOLDER, "settings.json");
   }
 
-  public async getUserSettings() {
+  public async getUserSettings(): Promise<any> {
     const settingsPath = this.getSettingsPath();
 
     if (!(await fs.pathExists(settingsPath))) {
@@ -119,7 +119,7 @@ export default class SettingsHelper {
     return jsonc.parse(fileContents);
   }
 
-  public async updateUserSettings(update: Settings) {
+  public async updateUserSettings(update: Settings): Promise<void> {
     const existingSettings = await this.getUserSettings();
 
     const newSettings = Object.assign({}, existingSettings, update);
@@ -131,7 +131,7 @@ export default class SettingsHelper {
     });
   }
 
-  public getCodeBinary() {
+  public getCodeBinary(): string {
     const binaryFullPath: string = process.argv0;
     let codeInstallSuffix = "";
     let codeCliPath = "";

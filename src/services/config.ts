@@ -30,13 +30,13 @@ class Config {
     return vscode.workspace.getConfiguration(ConfigKey);
   }
 
-  public getLiveShareProfile() {
+  public getLiveShareProfile(): string | null {
     const config = this.getConfig();
 
     return config.get<string | null>(ConfigLiveShareProfileKey, null);
   }
 
-  public setLiveShareProfile(profile: string) {
+  public setLiveShareProfile(profile: string): Thenable<void> {
     const config = this.getConfig();
 
     return config.update(
@@ -46,7 +46,7 @@ class Config {
     );
   }
 
-  public async setCurrentProfile(profile: string) {
+  public async setCurrentProfile(profile: string): Promise<void> {
     if (this.context) {
       const previousProfile = this.context.globalState.get<string>(
         ContextSettingCurrentProfile
@@ -67,22 +67,22 @@ class Config {
     );
   }
 
-  public setPreviousProfile(profile: string | undefined) {
+  public setPreviousProfile(profile: string | undefined): void {
     this.context &&
       this.context.globalState.update(ContextSettingPreviousProfile, profile);
   }
 
-  public getProfiles() {
+  public getProfiles(): string[] {
     const config = this.getConfig();
 
     return config.get<string[]>(ConfigProfilesKey, []).sort();
   }
 
-  public getProfileSettings(profile: string) {
+  public getProfileSettings(profile: string): Settings {
     return this.getStorage()[profile];
   }
 
-  public getProfileExtensions(profile: string) {
+  public getProfileExtensions(profile: string): ExtensionInfo[] {
     return this.getExtensions()[profile] || [];
   }
 
@@ -92,7 +92,7 @@ class Config {
     return config.get<Storage>(ConfigStorageKey, {});
   }
 
-  public addProfile(profile: string) {
+  public addProfile(profile: string): Thenable<void> {
     const config = this.getConfig();
 
     const existingProfiles = this.getProfiles();
@@ -104,7 +104,7 @@ class Config {
     );
   }
 
-  public removeProfile(profile: string) {
+  public removeProfile(profile: string): Thenable<void> {
     const profiles = this.getProfiles();
     const newProfiles = profiles
       .slice(0, profiles.indexOf(profile))
@@ -119,7 +119,10 @@ class Config {
     );
   }
 
-  public addProfileSettings(profile: string, settings: Settings) {
+  public addProfileSettings(
+    profile: string,
+    settings: Settings
+  ): Thenable<void> {
     const deleteSetting = (key: string) => {
       if (`${ConfigKey}.${key}` in settings) {
         delete settings[`${ConfigKey}.${key}`];
@@ -137,10 +140,15 @@ class Config {
     return this.updateStorage(storage);
   }
 
-  public removeProfileSettings(profile: string) {
+  public removeProfileSettings(profile: string): Thenable<void> {
     const storage = this.getStorage();
-    delete storage[profile];
-    return this.updateStorage(storage);
+    const newStorage = Object.keys(storage)
+      .filter((sKey) => sKey != profile)
+      .reduce((obj: Storage, key: string) => {
+        obj[key] = storage[key];
+        return obj;
+      }, {});
+    return this.updateStorage(newStorage);
   }
 
   private updateStorage(storage: Storage) {
@@ -153,7 +161,10 @@ class Config {
     );
   }
 
-  public addExtensions(profile: string, extensions: ExtensionInfo[]) {
+  public addExtensions(
+    profile: string,
+    extensions: ExtensionInfo[]
+  ): Thenable<void> {
     const storage = this.getExtensions();
     storage[profile] = extensions;
     return this.updateExtensions(storage);
@@ -175,13 +186,18 @@ class Config {
     );
   }
 
-  public removeProfileExtensions(profile: string) {
+  public removeProfileExtensions(profile: string): Thenable<void> {
     const storage = this.getExtensions();
-    delete storage[profile];
-    return this.updateExtensions(storage);
+    const newStorage = Object.keys(storage)
+      .filter((sKey) => sKey != profile)
+      .reduce((obj: ExtensionStorage, key: string) => {
+        obj[key] = storage[key];
+        return obj;
+      }, {});
+    return this.updateExtensions(newStorage);
   }
 
-  public getIgnoredExtensions() {
+  public getIgnoredExtensions(): string[] {
     const config = this.getConfig();
 
     return config.get<string[]>(ConfigExtensionsIgnoreKey, []);

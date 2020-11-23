@@ -17,7 +17,7 @@ export class ExtensionInfo {
     public publisherName: string,
     public version: string,
     public name: string
-  ) { }
+  ) {}
 }
 
 class ExtensionHelper {
@@ -25,24 +25,24 @@ class ExtensionHelper {
     private context: vscode.ExtensionContext,
     private settings: SettingsHelper,
     private config: Config
-  ) { }
+  ) {}
 
-  public getInstalled() {
+  public getInstalled(): ExtensionInfo[] {
     const ignoredExtensions = this.config.getIgnoredExtensions();
 
     return (
       vscode.extensions.all
-        .filter(ext => !ext.packageJSON.isBuiltin)
+        .filter((ext) => !ext.packageJSON.isBuiltin)
         // ignore the current extension
-        .filter(ext => ext.id.toLowerCase() !== ExtensionId.toLowerCase())
+        .filter((ext) => ext.id.toLowerCase() !== ExtensionId.toLowerCase())
         .filter(
-          ext =>
+          (ext) =>
             ignoredExtensions.filter(
-              iext => iext.toLowerCase() === ext.id.toLowerCase()
+              (iext) => iext.toLowerCase() === ext.id.toLowerCase()
             ).length === 0
         )
         .map(
-          ext =>
+          (ext) =>
             new ExtensionInfo(
               ext.packageJSON.uuid,
               ext.packageJSON.id,
@@ -73,7 +73,7 @@ class ExtensionHelper {
       logger.appendLine(`Extension ${ext.name} has been backed up.`);
       logger.appendLine("");
     } catch (e) {
-      console.log(`Profile Switcher: Error backing up exstension ${name}`);
+      console.log(`Profile Switcher: Error backing up extension ${name}`);
       console.log(e);
     }
 
@@ -82,16 +82,19 @@ class ExtensionHelper {
       logger.appendLine(`Extension ${ext.name} has been removed from VS Code.`);
       logger.appendLine("");
     } catch (e) {
-      console.log(`Profile Switcher: Error removing exstension ${name}`);
+      console.log(`Profile Switcher: Error removing extension ${name}`);
       console.log(e);
     }
   }
 
-  public async removeExtensions(extensions: ExtensionInfo[], logger: Logger) {
+  public async removeExtensions(
+    extensions: ExtensionInfo[],
+    logger: Logger
+  ): Promise<void> {
     const installedExtensions = this.getInstalled();
 
     const extensionsToRemove = installedExtensions.filter(
-      ext => extensions.filter(e => e.id === ext.id).length === 0
+      (ext) => extensions.filter((e) => e.id === ext.id).length === 0
     );
 
     if (!(await fs.pathExists(this.context.globalStoragePath))) {
@@ -158,11 +161,14 @@ class ExtensionHelper {
     }
   }
 
-  public async installExtensions(extensions: ExtensionInfo[], logger: Logger) {
+  public async installExtensions(
+    extensions: ExtensionInfo[],
+    logger: Logger
+  ): Promise<void> {
     const installedExtensions = this.getInstalled();
 
     const newExtensions = extensions.filter(
-      ext => installedExtensions.filter(e => e.id === ext.id).length === 0
+      (ext) => installedExtensions.filter((e) => e.id === ext.id).length === 0
     );
 
     if (!(await fs.pathExists(this.context.globalStoragePath))) {
