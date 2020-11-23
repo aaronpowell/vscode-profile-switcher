@@ -1,9 +1,9 @@
 trigger:
   branches:
     exclude:
-      - master
+      - main
 pr:
-- master
+- main
 
 variables:
 - group: codecov
