@@ -142,7 +142,7 @@
     "istanbul-reports": "^2.2.7",
     "mocha": "^6.2.3",
     "mocha-multi-reporters": "^1.5.1",
-    "tslint": "^5.20.1",
+    "prettier": "^2.2.0",
     "typescript": "^3.9.7",
     "vscode-test": "^1.4.1"
   },
