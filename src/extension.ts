@@ -16,8 +16,12 @@ async function activateProfile(
 
   await config.setCurrentProfile(profile);
 
-  let profileSettings = config.getProfileSettings(profile);
+  let configSettings = config.getProfileSettings(profile);
+  let profileSettings = await settingsHelper.getProfileSettings(profile, configSettings);
+  let workspaceSettings = await settingsHelper.getWorkspaceSettings(profile, Object.assign({}, configSettings));
+
   await settingsHelper.updateUserSettings(profileSettings);
+  await settingsHelper.updateWorkspaceSettings(workspaceSettings);
 
   let extensions = config.getProfileExtensions(profile);
   await extensionsHelper.installExtensions(extensions, logger);
