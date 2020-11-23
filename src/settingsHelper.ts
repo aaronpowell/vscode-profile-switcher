@@ -8,17 +8,17 @@ import * as jsonc from "jsonc-parser";
 export enum OsType {
   Windows = 1,
   Linux,
-  Mac
+  Mac,
 }
 
 export default class SettingsHelper {
-  public isInsiders: boolean = false;
-  public isOss: boolean = false;
-  public isPortable: boolean = false;
+  public isInsiders = false;
+  public isOss = false;
+  public isPortable = false;
   public homeDir: string;
   public USER_FOLDER: string;
 
-  public PATH: string = "";
+  public PATH = "";
   public OsType: OsType = OsType.Windows;
   public ExtensionFolder: string;
 
@@ -34,10 +34,10 @@ export default class SettingsHelper {
     this.homeDir = isXdg
       ? process.env.XDG_DATA_HOME || ""
       : process.env[process.platform === "win32" ? "USERPROFILE" : "HOME"] ||
-      "";
+        "";
     const configSuffix = `${isXdg ? "" : "."}vscode${
       this.isInsiders ? "-insiders" : this.isOss ? "-oss" : ""
-      }`;
+    }`;
 
     if (!this.isPortable) {
       if (process.platform === "darwin") {
@@ -108,31 +108,31 @@ export default class SettingsHelper {
   }
 
   public async getUserSettings() {
-    let settingsPath = this.getSettingsPath();
+    const settingsPath = this.getSettingsPath();
 
     if (!(await fs.pathExists(settingsPath))) {
       return {};
     }
 
-    let fileContents = await fs.readFile(settingsPath, { encoding: "utf8" });
+    const fileContents = await fs.readFile(settingsPath, { encoding: "utf8" });
 
     return jsonc.parse(fileContents);
   }
 
   public async updateUserSettings(update: Settings) {
-    let existingSettings = await this.getUserSettings();
+    const existingSettings = await this.getUserSettings();
 
-    let newSettings = Object.assign({}, existingSettings, update);
+    const newSettings = Object.assign({}, existingSettings, update);
 
-    let settingsAsJson = JSON.stringify(newSettings, null, 4);
+    const settingsAsJson = JSON.stringify(newSettings, null, 4);
 
     await fs.writeFile(this.getSettingsPath(), settingsAsJson, {
-      encoding: "utf8"
+      encoding: "utf8",
     });
   }
 
   public getCodeBinary() {
-    let binaryFullPath: string = process.argv0;
+    const binaryFullPath: string = process.argv0;
     let codeInstallSuffix = "";
     let codeCliPath = "";
     if (this.OsType === OsType.Windows) {

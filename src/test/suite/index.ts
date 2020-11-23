@@ -1,7 +1,7 @@
-import * as path from 'path';
-import * as Mocha from 'mocha';
-import * as glob from 'glob';
-import { createReport } from '../coverage';
+import * as path from "path";
+import * as Mocha from "mocha";
+import * as glob from "glob";
+import { createReport } from "../coverage";
 
 export function run(): Promise<void> {
   const mocha = new Mocha({
@@ -11,31 +11,31 @@ export function run(): Promise<void> {
     reporterOptions: {
       reporterEnabled: "spec, xunit",
       xunitReporterOptions: {
-        output: path.join(__dirname, "..", "..", "test-results.xml")
-      }
-    }
+        output: path.join(__dirname, "..", "..", "test-results.xml"),
+      },
+    },
   });
 
   mocha.useColors(true);
 
-  const testsRoot = path.resolve(__dirname, '..');
+  const testsRoot = path.resolve(__dirname, "..");
 
   return new Promise((c, e) => {
-    glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+    glob("**/**.test.js", { cwd: testsRoot }, (err, files) => {
       if (err) {
         return e(err);
       }
 
       // Add files to the test suite
-      files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
+      files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
 
       try {
         // Run the mocha test
-        mocha.run(failures => {
+        mocha.run((failures) => {
           if (failures > 0) {
             e(new Error(`${failures} tests failed.`));
           } else {
-            c();
+            c(undefined);
           }
         });
       } catch (err) {
@@ -44,7 +44,7 @@ export function run(): Promise<void> {
     });
   }).then(() => {
     // Tests have finished executing, check if we should generate a coverage report
-    if (process.env['GENERATE_COVERAGE']) {
+    if (process.env["GENERATE_COVERAGE"]) {
       createReport();
     }
   });
