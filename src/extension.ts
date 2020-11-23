@@ -183,4 +183,6 @@ export async function activate(
   liveShare.initialize(config, (profile: string) => {
     activateProfile(profile, config, settingsHelper, extensionsHelper);
   });
+
+  config.showStatusBarCurrentProfile();
 }

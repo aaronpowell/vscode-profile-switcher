@@ -10,6 +10,7 @@ import {
   ContextSettingPreviousProfile,
 } from "../constants";
 import { ExtensionInfo } from "./extensions";
+import ContributedCommands from "../commands";
 
 export interface Settings {
   [key: string]: number | string | boolean | unknown;
@@ -57,6 +58,27 @@ class Config {
         ContextSettingCurrentProfile,
         profile
       );
+
+      await this.showStatusBarCurrentProfile();
+    }
+  }
+
+  private _statusBarItem?: vscode.StatusBarItem;
+
+  public async showStatusBarCurrentProfile(): Promise<void> {
+    if (this.context) {
+      const profile = this.context.globalState.get<string>(
+        ContextSettingCurrentProfile
+      );
+
+      if (!this._statusBarItem) {
+        this._statusBarItem = vscode.window.createStatusBarItem(
+          vscode.StatusBarAlignment.Right
+        );
+        this._statusBarItem.command = ContributedCommands.SelectProfile;
+      }
+      this._statusBarItem.text = `Profile: ${profile}`;
+      this._statusBarItem.show();
     }
   }
 
@@ -140,15 +162,19 @@ class Config {
     return this.updateStorage(storage);
   }
 
-  public removeProfileSettings(profile: string): Thenable<void> {
-    const storage = this.getStorage();
-    const newStorage = Object.keys(storage)
+  private deleteStorage(storage: Storage | ExtensionStorage, profile: string) {
+    return Object.keys(storage)
       .filter((sKey) => sKey != profile)
-      .reduce((obj: Storage, key: string) => {
+      .reduce((obj: any, key: string) => {
         obj[key] = storage[key];
         return obj;
       }, {});
-    return this.updateStorage(newStorage);
+  }
+
+  public removeProfileSettings(profile: string): Thenable<void> {
+    const storage = this.getStorage();
+    const filteredStorage = this.deleteStorage(storage, profile);
+    return this.updateStorage(filteredStorage);
   }
 
   private updateStorage(storage: Storage) {
@@ -188,13 +214,8 @@ class Config {
 
   public removeProfileExtensions(profile: string): Thenable<void> {
     const storage = this.getExtensions();
-    const newStorage = Object.keys(storage)
-      .filter((sKey) => sKey != profile)
-      .reduce((obj: ExtensionStorage, key: string) => {
-        obj[key] = storage[key];
-        return obj;
-      }, {});
-    return this.updateExtensions(newStorage);
+    const filteredStorage = this.deleteStorage(storage, profile);
+    return this.updateExtensions(filteredStorage);
   }
 
   public getIgnoredExtensions(): string[] {
