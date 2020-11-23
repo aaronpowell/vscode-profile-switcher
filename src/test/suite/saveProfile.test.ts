@@ -14,7 +14,7 @@ import { ExtensionInfo } from "../../services/extensions";
 suite("save profile", () => {
   const expectedProfileName = "test1";
   teardown(async () => {
-    let config = vscode.workspace.getConfiguration(ConfigKey);
+    const config = vscode.workspace.getConfiguration(ConfigKey);
 
     await config.update(
       ConfigProfilesKey,
@@ -24,11 +24,11 @@ suite("save profile", () => {
   });
 
   test("can save a profile name", async () => {
-    var config = new Config();
+    const config = new Config();
 
     await config.addProfile(expectedProfileName);
 
-    let profiles = config.getProfiles();
+    const profiles = config.getProfiles();
     assert.include(profiles, expectedProfileName);
   });
 
@@ -44,7 +44,7 @@ suite("save profile", () => {
     };
 
     teardown(async () => {
-      let config = vscode.workspace.getConfiguration(ConfigKey);
+      const config = vscode.workspace.getConfiguration(ConfigKey);
 
       await config.update(
         ConfigStorageKey,
@@ -54,19 +54,19 @@ suite("save profile", () => {
     });
 
     test("can save profile settings", async () => {
-      var config = new Config();
+      const config = new Config();
 
       await config.addProfileSettings(
         expectedProfileName,
         expectedProfileSettings
       );
 
-      let settings = config.getProfileSettings(expectedProfileName);
+      const settings = config.getProfileSettings(expectedProfileName);
       assert.deepEqual(settings, expectedProfileSettings);
     });
 
     test("can update existing profile", async () => {
-      var config = new Config();
+      const config = new Config();
 
       await config.addProfileSettings(
         expectedProfileName,
@@ -77,19 +77,19 @@ suite("save profile", () => {
         expectedUpdatedProfileSettings
       );
 
-      let settings = config.getProfileSettings(expectedProfileName);
+      const settings = config.getProfileSettings(expectedProfileName);
       assert.deepEqual(settings, expectedUpdatedProfileSettings);
     });
 
     test("saving profile doesn't include profileSwitcher settings", async () => {
-      var config = new Config();
+      const config = new Config();
 
       await config.addProfileSettings(
         expectedProfileName,
         Object.assign({}, expectedProfileSettings, profileSwitcherSettings)
       );
 
-      let settings = config.getProfileSettings(expectedProfileName);
+      const settings = config.getProfileSettings(expectedProfileName);
       Object.keys(profileSwitcherSettings).forEach(key =>
         assert.isUndefined(
           settings[key],
@@ -109,7 +109,7 @@ suite("save profile", () => {
     ];
 
     teardown(async () => {
-      let config = vscode.workspace.getConfiguration(ConfigKey);
+      const config = vscode.workspace.getConfiguration(ConfigKey);
 
       await config.update(
         ConfigExtensionsKey,
@@ -119,16 +119,16 @@ suite("save profile", () => {
     });
 
     test("can save extensions", async () => {
-      var config = new Config();
+      const config = new Config();
 
       await config.addExtensions(expectedProfileName, expectedExtensions);
 
-      let settings = config.getProfileExtensions(expectedProfileName);
+      const settings = config.getProfileExtensions(expectedProfileName);
       assert.deepEqual(settings, expectedExtensions);
     });
 
     test("can update existing profile", async () => {
-      var config = new Config();
+      const config = new Config();
 
       await config.addExtensions(expectedProfileName, expectedExtensions);
       await config.addExtensions(
@@ -136,7 +136,7 @@ suite("save profile", () => {
         expectedUpdatedExtensions
       );
 
-      let settings = config.getProfileExtensions(expectedProfileName);
+      const settings = config.getProfileExtensions(expectedProfileName);
       assert.deepEqual(settings, expectedUpdatedExtensions);
     });
   });

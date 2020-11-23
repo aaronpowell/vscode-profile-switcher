@@ -28,7 +28,7 @@ class ExtensionHelper {
   ) { }
 
   public getInstalled() {
-    let ignoredExtensions = this.config.getIgnoredExtensions();
+    const ignoredExtensions = this.config.getIgnoredExtensions();
 
     return (
       vscode.extensions.all
@@ -56,7 +56,7 @@ class ExtensionHelper {
 
   private async removeExtension(ext: ExtensionInfo, logger: Logger) {
     const name = `${ext.publisherName}.${ext.name}-${ext.version}`;
-    let extPath = join(this.settings.ExtensionFolder, name);
+    const extPath = join(this.settings.ExtensionFolder, name);
 
     if (!(await fs.pathExists(extPath))) {
       console.log(
@@ -66,7 +66,7 @@ class ExtensionHelper {
     }
 
     try {
-      let backupPath = join(this.context.globalStoragePath, name);
+      const backupPath = join(this.context.globalStoragePath, name);
       if (!(await fs.pathExists(join(this.context.globalStoragePath, name)))) {
         await fs.copy(extPath, backupPath);
       }
@@ -88,9 +88,9 @@ class ExtensionHelper {
   }
 
   public async removeExtensions(extensions: ExtensionInfo[], logger: Logger) {
-    let installedExtensions = this.getInstalled();
+    const installedExtensions = this.getInstalled();
 
-    let extensionsToRemove = installedExtensions.filter(
+    const extensionsToRemove = installedExtensions.filter(
       ext => extensions.filter(e => e.id === ext.id).length === 0
     );
 
@@ -105,7 +105,7 @@ class ExtensionHelper {
     logger.appendLine("");
     logger.appendLine("");
 
-    let removes = extensionsToRemove.map((ext, i) => {
+    const removes = extensionsToRemove.map((ext, i) => {
       logger.appendLine(
         `Removing ${ext.name} (${i + 1} of ${extensionsToRemove.length})`
       );
@@ -142,7 +142,7 @@ class ExtensionHelper {
     if (!installed) {
       try {
         const cli = `${binaryFullPath} --install-extension ${ext.publisherId}`;
-        let result = await exec(cli);
+        const result = await exec(cli);
         logger.appendLine(result.stdout);
         logger.appendLine(
           `Extension ${name} was installed from the marketplace.`
@@ -159,9 +159,9 @@ class ExtensionHelper {
   }
 
   public async installExtensions(extensions: ExtensionInfo[], logger: Logger) {
-    let installedExtensions = this.getInstalled();
+    const installedExtensions = this.getInstalled();
 
-    let newExtensions = extensions.filter(
+    const newExtensions = extensions.filter(
       ext => installedExtensions.filter(e => e.id === ext.id).length === 0
     );
 
@@ -176,9 +176,9 @@ class ExtensionHelper {
     logger.appendLine("");
     logger.appendLine("");
 
-    let codeBinary = this.settings.getCodeBinary();
+    const codeBinary = this.settings.getCodeBinary();
     for (let i = 0; i < newExtensions.length; i++) {
-      let ext = newExtensions[i];
+      const ext = newExtensions[i];
       logger.appendLine(
         `Installing ${ext.name} (${i + 1} of ${newExtensions.length})`
       );

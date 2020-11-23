@@ -7,12 +7,12 @@ import {
   ConfigExtensionsIgnoreKey,
   ConfigLiveShareProfileKey,
   ContextSettingCurrentProfile,
-  ContextSettingPreviousProfile
+  ContextSettingPreviousProfile,
 } from "../constants";
 import { ExtensionInfo } from "./extensions";
 
 export interface Settings {
-  [key: string]: number | string | boolean | object;
+  [key: string]: number | string | boolean | unknown;
 }
 
 export interface Storage {
@@ -31,13 +31,13 @@ class Config {
   }
 
   public getLiveShareProfile() {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.get<string | null>(ConfigLiveShareProfileKey, null);
   }
 
   public setLiveShareProfile(profile: string) {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.update(
       ConfigLiveShareProfileKey,
@@ -73,7 +73,7 @@ class Config {
   }
 
   public getProfiles() {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.get<string[]>(ConfigProfilesKey, []).sort();
   }
@@ -87,15 +87,15 @@ class Config {
   }
 
   private getStorage() {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.get<Storage>(ConfigStorageKey, {});
   }
 
   public addProfile(profile: string) {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
-    let existingProfiles = this.getProfiles();
+    const existingProfiles = this.getProfiles();
 
     return config.update(
       ConfigProfilesKey,
@@ -105,12 +105,12 @@ class Config {
   }
 
   public removeProfile(profile: string) {
-    let profiles = this.getProfiles();
-    let newProfiles = profiles
+    const profiles = this.getProfiles();
+    const newProfiles = profiles
       .slice(0, profiles.indexOf(profile))
       .concat(profiles.slice(profiles.indexOf(profile) + 1, profiles.length));
 
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.update(
       ConfigProfilesKey,
@@ -132,19 +132,19 @@ class Config {
     deleteSetting(ConfigExtensionsIgnoreKey);
     deleteSetting(ConfigLiveShareProfileKey);
 
-    let storage = this.getStorage();
+    const storage = this.getStorage();
     storage[profile] = settings;
     return this.updateStorage(storage);
   }
 
   public removeProfileSettings(profile: string) {
-    let storage = this.getStorage();
+    const storage = this.getStorage();
     delete storage[profile];
     return this.updateStorage(storage);
   }
 
   private updateStorage(storage: Storage) {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.update(
       ConfigStorageKey,
@@ -154,19 +154,19 @@ class Config {
   }
 
   public addExtensions(profile: string, extensions: ExtensionInfo[]) {
-    let storage = this.getExtensions();
+    const storage = this.getExtensions();
     storage[profile] = extensions;
     return this.updateExtensions(storage);
   }
 
   private getExtensions() {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.get<ExtensionStorage>(ConfigExtensionsKey, {});
   }
 
   private updateExtensions(storage: ExtensionStorage) {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.update(
       ConfigExtensionsKey,
@@ -176,13 +176,13 @@ class Config {
   }
 
   public removeProfileExtensions(profile: string) {
-    let storage = this.getExtensions();
+    const storage = this.getExtensions();
     delete storage[profile];
     return this.updateExtensions(storage);
   }
 
   public getIgnoredExtensions() {
-    let config = this.getConfig();
+    const config = this.getConfig();
 
     return config.get<string[]>(ConfigExtensionsIgnoreKey, []);
   }

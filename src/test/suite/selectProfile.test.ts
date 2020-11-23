@@ -18,7 +18,7 @@ suite("select profile", () => {
   ];
 
   setup(async () => {
-    let config = vscode.workspace.getConfiguration(ConfigKey);
+    const config = vscode.workspace.getConfiguration(ConfigKey);
 
     await config.update(
       ConfigProfilesKey,
@@ -42,7 +42,7 @@ suite("select profile", () => {
   });
 
   teardown(async () => {
-    let config = vscode.workspace.getConfiguration(ConfigKey);
+    const config = vscode.workspace.getConfiguration(ConfigKey);
 
     await config.update(
       ConfigProfilesKey,
@@ -62,25 +62,25 @@ suite("select profile", () => {
   });
 
   test("list of profiles will contain the expected one", () => {
-    let config = new Config();
+    const config = new Config();
 
-    let profiles = config.getProfiles();
+    const profiles = config.getProfiles();
 
     assert.include(profiles, expectedProfileName);
   });
 
   test("storage contains the expected profile settings", () => {
-    let config = new Config();
+    const config = new Config();
 
-    let settings = config.getProfileSettings(expectedProfileName);
+    const settings = config.getProfileSettings(expectedProfileName);
 
     assert.deepEqual(settings, expectedProfileSettings);
   });
 
   test("storage contains the expected profile extensions", () => {
-    let config = new Config();
+    const config = new Config();
 
-    let extensions = config.getProfileExtensions(expectedProfileName);
+    const extensions = config.getProfileExtensions(expectedProfileName);
 
     assert.deepEqual(extensions, expectedExtensions);
   });

@@ -12,14 +12,14 @@ async function activateProfile(
   settingsHelper: SettingsHelper,
   extensionsHelper: ExtensionHelper
 ) {
-  let msg = vscode.window.setStatusBarMessage("Switching profiles.");
+  const msg = vscode.window.setStatusBarMessage("Switching profiles.");
 
   await config.setCurrentProfile(profile);
 
-  let profileSettings = config.getProfileSettings(profile);
+  const profileSettings = config.getProfileSettings(profile);
   await settingsHelper.updateUserSettings(profileSettings);
 
-  let extensions = config.getProfileExtensions(profile);
+  const extensions = config.getProfileExtensions(profile);
   await extensionsHelper.installExtensions(extensions, logger);
   await extensionsHelper.removeExtensions(extensions, logger);
 
@@ -36,7 +36,7 @@ async function activateProfile(
 }
 
 async function promptProfile(config: Config): Promise<string | undefined> {
-  let profiles = config.getProfiles();
+  const profiles = config.getProfiles();
 
   if (!profiles.length) {
     await vscode.window.showInformationMessage(
@@ -45,7 +45,7 @@ async function promptProfile(config: Config): Promise<string | undefined> {
     return;
   }
 
-  let profile = await vscode.window.showQuickPick(profiles, {
+  const profile = await vscode.window.showQuickPick(profiles, {
     placeHolder: "Select a profile"
   });
 
@@ -84,7 +84,7 @@ function saveProfile(
   extensionsHelper: ExtensionHelper
 ) {
   return async () => {
-    let profiles = config.getProfiles();
+    const profiles = config.getProfiles();
 
     let profile = await vscode.window.showQuickPick(
       [...profiles, "New profile"],
@@ -105,9 +105,9 @@ function saveProfile(
       await config.addProfile(profile);
     }
 
-    let userSettings = await settingsHelper.getUserSettings();
+    const userSettings = await settingsHelper.getUserSettings();
 
-    let extensions = extensionsHelper.getInstalled();
+    const extensions = extensionsHelper.getInstalled();
 
     await config.addProfileSettings(profile, userSettings);
     await config.addExtensions(profile, extensions);
@@ -118,7 +118,7 @@ function saveProfile(
 
 function deleteProfile(config: Config) {
   return async () => {
-    let profiles = config.getProfiles();
+    const profiles = config.getProfiles();
 
     if (!profiles.length) {
       await vscode.window.showInformationMessage(
@@ -127,7 +127,7 @@ function deleteProfile(config: Config) {
       return;
     }
 
-    let profile = await vscode.window.showQuickPick(profiles, {
+    const profile = await vscode.window.showQuickPick(profiles, {
       placeHolder: "Select a profile"
     });
 
@@ -146,9 +146,9 @@ function deleteProfile(config: Config) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  let config = new Config(context);
-  let settingsHelper = new SettingsHelper(context);
-  let extensionsHelper = new ExtensionHelper(context, settingsHelper, config);
+  const config = new Config(context);
+  const settingsHelper = new SettingsHelper(context);
+  const extensionsHelper = new ExtensionHelper(context, settingsHelper, config);
 
   context.subscriptions.push(
     vscode.commands.registerCommand(

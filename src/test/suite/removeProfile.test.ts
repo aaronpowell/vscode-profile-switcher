@@ -18,7 +18,7 @@ suite("remove profile", () => {
   ];
 
   setup(async () => {
-    let config = vscode.workspace.getConfiguration(ConfigKey);
+    const config = vscode.workspace.getConfiguration(ConfigKey);
 
     await config.update(
       ConfigProfilesKey,
@@ -42,31 +42,31 @@ suite("remove profile", () => {
   });
 
   test("can remove profile name", async () => {
-    let config = new Config();
+    const config = new Config();
 
     await config.removeProfile(expectedProfileName);
 
-    let profiles = config.getProfiles();
+    const profiles = config.getProfiles();
 
     assert.notInclude(profiles, expectedProfileName);
   });
 
   test("can remove profile settings", async () => {
-    let config = new Config();
+    const config = new Config();
 
     await config.removeProfileSettings(expectedProfileName);
 
-    let settings = config.getProfileSettings(expectedProfileName);
+    const settings = config.getProfileSettings(expectedProfileName);
 
     assert.isUndefined(settings);
   });
 
   test("can remove profile extensions", async () => {
-    let config = new Config();
+    const config = new Config();
 
     await config.removeProfileExtensions(expectedProfileName);
 
-    let extensions = config.getProfileExtensions(expectedProfileName);
+    const extensions = config.getProfileExtensions(expectedProfileName);
 
     assert.isEmpty(extensions);
   });

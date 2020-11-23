@@ -47,7 +47,7 @@ function rreaddir(dirname: string): string[] {
 
 export function instrument() {
   const instrumenter = iLibInstrument.createInstrumenter();
-  let files = rreaddir(path.resolve(REPO_ROOT, 'out'));
+  const files = rreaddir(path.resolve(REPO_ROOT, 'out'));
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
