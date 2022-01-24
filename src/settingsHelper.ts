@@ -122,7 +122,7 @@ export default class SettingsHelper {
   public async updateUserSettings(update: Settings): Promise<void> {
     const existingSettings = await this.getUserSettings();
 
-    const newSettings = Object.assign({}, existingSettings, update);
+    const newSettings = Object.assign({}, JSON.parse(JSON.stringify(existingSettings)), JSON.parse(JSON.stringify(update)));
 
     const settingsAsJson = JSON.stringify(newSettings, null, 4);
 
