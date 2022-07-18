@@ -1,3 +1,5 @@
+> This project is being archived as the feature is being added to VS Code itself, see https://code.visualstudio.com/updates/v1_69#_settings-profiles for testing and https://github.com/microsoft/vscode/issues/116740 for tracking the feature integration.
+
 # VS Code Profile Switcher
 
 | Job                 | Status                                                                                                                                                                                                                                                                                         |
